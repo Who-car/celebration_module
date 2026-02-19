@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>23 Февраля | Special Operation</title>
+    <!-- Подключаем стили -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Библиотека конфетти -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <!-- 1. КОНТЕЙНЕР ЛОАДЕРА -->
+    <div id="terminal-loader">
+        <div class="terminal-content">
+            <div class="terminal-text"></div>
+            <span class="cursor">_</span>
+        </div>
+    </div>
+
+    <!-- 2. КОНТЕЙНЕР КАПЧИ (скрыт по умолчанию) -->
+    <div id="captcha-container" class="hidden">
+        <h2>ПРОВЕРКА БЕЗОПАСНОСТИ</h2>
+        <p>Соберите изображение (клик для поворота)</p>
+        <div id="puzzle-grid"></div>
+    </div>
+
+    <!-- 3. КОНТЕЙНЕР ИГРЫ (скрыт по умолчанию) -->
+    <div id="game-container" class="hidden">
+        <h2>МИССИЯ: ДОСТАВИТЬ ГРУЗ</h2>
+        <p>WASD / Стрелки - движение | Пробел - огонь</p>
+        <canvas id="game-canvas"></canvas>
+    </div>
+
+    <!-- 4. МОДАЛКА ПОЗДРАВЛЕНИЯ (скрыта) -->
+    <div id="congrats-modal" class="modal hidden">
+        <div class="modal-content">
+            <img id="congrats-img" src="" alt="Congrats">
+            <h2 id="congrats-text"></h2>
+            <button onclick="openLootboxScene()">ЗАБРАТЬ ПРИЗ 🎁</button>
+        </div>
+    </div>
+
+    <!-- 5. СЦЕНА ЛУТБОКСА (скрыта) -->
+    <div id="lootbox-scene" class="hidden">
+        <h2>ОТКРЫТИЕ ЛУТБОКСА</h2>
+        <div class="lootbox-wrapper">
+            <div class="lootbox">
+                <div class="selector"></div>
+                <div class="lootbox-items" id="lootbox-items"></div>
+            </div>
+        </div>
+        <button id="spin-btn" onclick="spinLootbox()">ОТКРЫТЬ</button>
+    </div>
+
+    <!-- 6. ФИНАЛЬНЫЙ ЭКРАН (скрыт) -->
+    <div id="final-prize" class="modal hidden">
+        <div class="modal-content">
+            <h2>🎉 ПОЗДРАВЛЯЕМ! 🎉</h2>
+            <img src="assets/certificate.png" alt="Certificate" class="certificate-img">
+            <p>Твой сертификат на 23 февраля!</p>
+            <a href="https://your-certificate-link.com" target="_blank" class="get-prize-btn">
+                ПОЛУЧИТЬ СЕРТИФИКАТ
+            </a>
+        </div>
+    </div>
+
+    <!-- Подключаем скрипты (порядок важен!) -->
+    <script src="js/loader.js"></script>
+    <script src="js/captcha.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/lootbox.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
