@@ -7,8 +7,6 @@ function initCaptcha() {
     const grid = document.getElementById('puzzle-grid');
     grid.innerHTML = '';
     
-    const pieces = [];
-    
     // Создаем 16 кусочков
     for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
         const piece = document.createElement('div');
@@ -21,17 +19,17 @@ function initCaptcha() {
         const col = i % GRID_SIZE;
         piece.style.backgroundPosition = `-${col * PIECE_SIZE}px -${row * PIECE_SIZE}px`;
         
-        piece.dataset.index = i; // Правильный индекс
-        piece.dataset.rotation = 0;
-        piece.dataset.currentPos = i; // Текущая позиция (для перемешивания)
+        piece.dataset.index = i; // Правильный индекс (не меняется!)
+        
+        // случайный начальный поворот вместо перемешивания
+        const randomRotation = Math.floor(Math.random() * 4) * 90; // 0, 90, 180 или 270
+        piece.dataset.rotation = randomRotation;
+        piece.style.transform = `rotate(${randomRotation}deg)`;
         
         piece.onclick = () => rotatePiece(piece);
-        pieces.push(piece);
+        
+        grid.appendChild(piece); // Добавляем сразу, без перемешивания!
     }
-    
-    // Перемешиваем и добавляем в DOM
-    shuffleArray(pieces);
-    pieces.forEach(p => grid.appendChild(p));
 }
 
 function rotatePiece(piece) {
