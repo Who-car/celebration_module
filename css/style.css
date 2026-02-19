@@ -2,10 +2,10 @@
 body {
     margin: 0;
     padding: 0;
+    overflow: hidden; /* 🔥 Важно: убираем скролл */
     font-family: 'Courier New', monospace;
     background: #0a0a0a;
     color: #00ff00;
-    overflow-x: hidden;
 }
 
 .hidden {
@@ -186,4 +186,976 @@ button:hover, .get-prize-btn:hover {
 #spin-btn {
     font-size: 24px;
     padding: 20px 50px;
+}
+
+/* 📺 CRT-ЭФФЕКТ СТАРОГО МОНИТОРА */
+
+#terminal-loader {
+    position: relative;
+    /* 🔥 Мягкий зелёный градиент вместо чёрного */
+    background: 
+        radial-gradient(ellipse at center, #1a331a 0%, #0d1a0d 70%, #050a05 100%),
+        linear-gradient(180deg, #1a331a 0%, #0d1a0d 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    /* Эффект "выпуклого экрана" */
+    box-shadow: 
+        inset 0 0 60px rgba(0, 30, 0, 0.6),
+        inset 0 0 120px rgba(0, 50, 0, 0.4);
+}
+
+/* 🔥 Яркие сканирующие линии (как на видео с монитора) */
+#terminal-loader::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    /* Чёткие полосы: тёмная линия + прозрачный промежуток */
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.25) 0px,
+        rgba(0, 0, 0, 0.25) 2px,   /* толщина тёмной полосы */
+        transparent 2px,
+        transparent 4px             /* высота одной "линии" */
+    );
+    pointer-events: none;
+    z-index: 10;
+    /* Медленное движение полос */
+    animation: scanlineMove 8s linear infinite;
+}
+
+/* 🎞️ Эффект "шума" (зернистость ЭЛТ) */
+#terminal-loader::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    /* Шум через data-URL (маленький, чтобы не грузить) */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.08; /* Очень лёгкий шум */
+    pointer-events: none;
+    z-index: 5;
+    animation: noiseShift 0.5s steps(2) infinite;
+}
+
+/* 💚 Свечение текста (люминофор) — чуть мягче */
+.terminal-text {
+    color: #90ff90; /* Светло-зелёный вместо ядовитого */
+    text-shadow: 
+        0 0 4px #60ff60,
+        0 0 12px #30cc3088,
+        0 0 24px #20aa2044;
+    position: relative;
+    z-index: 20;
+    font-weight: 500;
+}
+
+.cursor {
+    color: #90ff90;
+    text-shadow: 
+        0 0 4px #60ff60,
+        0 0 12px #30cc30;
+    position: relative;
+    z-index: 20;
+}
+
+.terminal-instruction {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed #60ff6066;
+    color: #90ff90cc;
+    font-size: 14px;
+    animation: pulse 2s infinite;
+    position: relative;
+    z-index: 20;
+}
+
+/* 🔧 Анимации */
+
+/* Движение сканирующей линии */
+@keyframes scanlineMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 400px; }
+}
+
+/* Мерцание шума (как на старом ТВ) */
+@keyframes noiseShift {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(-1px, 1px); }
+    50% { transform: translate(1px, -1px); }
+    75% { transform: translate(-1px, -1px); }
+    100% { transform: translate(0, 0); }
+}
+
+/* Пульсация инструкции */
+@keyframes pulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.02); }
+}
+
+/* Лёгкое "дрожание" всего экрана (опционально) */
+.terminal-content {
+    animation: crtJitter 0.08s infinite;
+    position: relative;
+    z-index: 15;
+    padding: 40px;
+}
+
+@keyframes crtJitter {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(0.2px, -0.2px); }
+    50% { transform: translate(-0.2px, 0.2px); }
+    75% { transform: translate(0.2px, 0.2px); }
+}
+
+/* 🔐 GOOGLE-STYLE CAPTCHA MODAL */
+
+#captcha-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    backdrop-filter: blur(3px);
+}
+
+.captcha-modal {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    width: 400px;
+    max-width: 90%;
+    overflow: hidden;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.captcha-header {
+    background: #4a90d9; /* Google blue */
+    color: white;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.captcha-logo {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.captcha-close {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.captcha-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.captcha-body {
+    padding: 20px;
+    text-align: center;
+}
+
+.captcha-instruction {
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Сетка пазла — прямоугольная (4x3 для прямоугольной картинки) */
+#puzzle-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 70px);
+    grid-template-rows: repeat(3, 70px);
+    gap: 2px;
+    justify-content: center;
+    margin: 20px auto;
+    background: #f5f5f5;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.puzzle-piece {
+    width: 70px;
+    height: 70px;
+    background-color: #e0e0e0;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background-size: 280px 210px; /* 4*70 x 3*70 для прямоугольной картинки */
+    border-radius: 2px;
+}
+
+.puzzle-piece:hover {
+    box-shadow: 0 0 8px rgba(74, 144, 217, 0.6);
+    z-index: 1;
+}
+
+.puzzle-piece.correct {
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.8);
+    border: 2px solid #4caf50;
+}
+
+/* Видео контейнер */
+#captcha-video-container {
+    margin: 20px auto;
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 2px solid #4a90d9;
+    
+    /* 🔥 ФИКС: точные размеры как у пазла (4x3 по 70px) */
+    width: 280px;  /* 4 * 70px */
+    height: 210px; /* 3 * 70px */
+    
+    /* 🔥 ФИКС: центрирование */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000; /* Чёрный фон если видео не на весь контейнер */
+}
+
+#captcha-video {
+    /* 🔥 ФИКС: видео на весь контейнер без серых полос */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Заполняет контейнер без искажений */
+    display: block;
+    
+    /* Убираем любые отступы */
+    margin: 0;
+    padding: 0;
+}
+
+/* Успешная капча */
+#captcha-success {
+    padding: 40px 20px;
+    animation: successFadeIn 0.5s ease-out;
+}
+
+@keyframes successFadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.success-checkmark {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+}
+
+.checkmark-circle {
+    stroke: #4caf50;
+    stroke-width: 2;
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    animation: strokeCircle 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark-check {
+    stroke: #4caf50;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: strokeCheck 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+}
+
+@keyframes strokeCircle {
+    to { stroke-dashoffset: 0; }
+}
+
+@keyframes strokeCheck {
+    to { stroke-dashoffset: 0; }
+}
+
+#captcha-success p {
+    color: #4caf50;
+    font-size: 18px;
+    font-weight: 500;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+}
+
+.captcha-footer {
+    background: #f9f9f9;
+    padding: 12px 16px;
+    border-top: 1px solid #ddd;
+}
+
+.captcha-branding {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: #999;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.captcha-branding img {
+    width: 24px;
+    height: 24px;
+}
+
+.captcha-branding span {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* 🎮 ИГРОВОЙ ЭКРАН */
+#game-container {
+    position: relative;
+    width: 100vw; /* 🔥 На всю ширину окна */
+    height: 100vh; /* 🔥 На всю высоту окна */
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+#game-canvas {
+    border: 4px solid #4a90d9;
+    background: #000;
+    image-rendering: pixelated;
+    
+    /* 🔥 Увеличиваем канвас */
+    width: 832px;  /* 416px * 2 */
+    height: 832px; /* 416px * 2 */
+    max-width: 90vw;
+    max-height: 70vh;
+    
+    /* Центрируем */
+    display: block;
+    margin: 0 auto;
+}
+
+/* 📱 МОБИЛЬНОЕ УПРАВЛЕНИЕ — РЕТРО АРКАДА */
+.mobile-controls {
+    display: none;
+    width: 100vw;
+    padding: 0 20px 20px;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    z-index: 1000;
+}
+
+@media (max-width: 768px) {
+    .mobile-controls {
+        display: flex;
+    }
+    
+    #game-canvas {
+        width: 100vw;
+        height: 100vw;
+    }
+}
+
+/* D-Pad (крестовина) */
+.dpad {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    display: grid;
+    grid-template-columns: repeat(3, 56px);
+    grid-template-rows: repeat(3, 56px);
+    gap: 6px;
+    justify-items: center;
+    align-items: center;
+}
+
+.dpad-btn {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    background: radial-gradient(circle at 30% 30%, #666, #222);
+    border: 3px solid #f0d060;
+    border-radius: 6px;
+    color: #ffeaa7;
+    font-size: 22px;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 0 0 2px #000,
+        0 4px 0 #111,
+        0 6px 8px rgba(0,0,0,0.7);
+    text-shadow: 0 0 4px #000;
+    transition: transform 0.05s, box-shadow 0.05s, background 0.05s;
+}
+
+.dpad-btn:active, .dpad-btn.active {
+    background: radial-gradient(circle at 30% 30%, #555, #111);
+    transform: translateY(2px);
+    box-shadow:
+        0 0 0 2px #000,
+        0 2px 0 #050505,
+        0 4px 6px rgba(0,0,0,0.8);
+}
+
+.dpad-btn.up {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.dpad-btn.down {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+.dpad-btn.left {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.dpad-btn.right {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+/* Кнопка огня */
+.fire-btn {
+    width: 80px;
+    height: 80px;
+    background:
+        radial-gradient(circle at 30% 30%, #ffdd88, #ff7b00),
+        repeating-radial-gradient(circle, rgba(0,0,0,0.3) 0, rgba(0,0,0,0.3) 2px, transparent 2px, transparent 4px);
+    border: 4px solid #ffdd88;
+    border-radius: 50%;
+    color: #2b1800;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow:
+        0 0 0 2px #000,
+        0 6px 0 #5a2200,
+        0 10px 14px rgba(0,0,0,0.9);
+    text-shadow: 0 0 4px rgba(255,255,255,0.6);
+    transition: transform 0.05s, box-shadow 0.05s, background 0.05s;
+}
+
+.fire-btn:active, .fire-btn.active {
+    background:
+        radial-gradient(circle at 30% 30%, #ffcc66, #ff5a00),
+        repeating-radial-gradient(circle, rgba(0,0,0,0.35) 0, rgba(0,0,0,0.35) 2px, transparent 2px, transparent 4px);
+    transform: translateY(3px);
+    box-shadow:
+        0 0 0 2px #000,
+        0 3px 0 #3a1400,
+        0 6px 10px rgba(0,0,0,0.9);
+}
+
+/* 🎉 МОДАЛКА ПОЗДРАВЛЕНИЯ — RETRO STYLE */
+
+#congrats-modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    /* Фон с картинкой */
+    background: url('../assets/main_bg.png') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    
+    /* Эффект старого монитора */
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
+}
+
+/* Эффект scanlines поверх фона */
+#congrats-modal::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.15) 0px,
+        rgba(0, 0, 0, 0.15) 2px,
+        transparent 2px,
+        transparent 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+#congrats-modal .modal-content {
+    /* Убираем фон, делаем рамку в ретро стиле */
+    background: rgba(20, 10, 30, 0.9);
+    border: 4px solid #ff6b9d; /* Розовый неон */
+    border-radius: 0; /* 🔥 Никаких скруглений! */
+    padding: 40px;
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    z-index: 2;
+    
+    /* Тень в стиле неон */
+    box-shadow: 
+        0 0 20px #ff6b9d,
+        0 0 40px rgba(255, 107, 157, 0.5),
+        inset 0 0 20px rgba(255, 107, 157, 0.2);
+    
+    /* Анимация появления */
+    animation: retroAppear 0.5s ease-out;
+}
+
+@keyframes retroAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) rotate(-2deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+/* Ретро заголовок */
+.retro-title {
+    font-family: 'Courier New', monospace;
+    font-size: 48px;
+    font-weight: bold;
+    color: #ffe66d; /* Жёлтый неон */
+    margin: 0 0 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    
+    /* Неоновое свечение */
+    text-shadow: 
+        0 0 10px #ffe66d,
+        0 0 20px #ffe66d,
+        0 0 40px #ff6b9d,
+        0 0 80px #ff6b9d;
+    
+    /* Эффект мигания */
+    animation: retroFlicker 2s infinite;
+}
+
+@keyframes retroFlicker {
+    0%, 100% { opacity: 1; }
+    92% { opacity: 1; }
+    93% { opacity: 0.8; }
+    94% { opacity: 1; }
+    95% { opacity: 0.9; }
+    96% { opacity: 1; }
+}
+
+/* Подзаголовок */
+.retro-subtitle {
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    color: #4ecdc4; /* Бирюзовый неон */
+    margin: 0 0 30px 0;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    
+    text-shadow: 
+        0 0 10px #4ecdc4,
+        0 0 20px rgba(78, 205, 196, 0.5);
+}
+
+/* Картинка-открытка */
+#congrats-img {
+    width: 100%;
+    max-width: 400px;
+    border: 3px solid #4ecdc4;
+    border-radius: 0; /* 🔥 Никаких скруглений! */
+    margin: 20px auto;
+    display: block;
+    
+    /* Эффект свечения */
+    box-shadow: 
+        0 0 15px #4ecdc4,
+        0 0 30px rgba(78, 205, 196, 0.4);
+    
+    /* Анимация */
+    animation: cardPulse 3s infinite;
+}
+
+@keyframes cardPulse {
+    0%, 100% { 
+        box-shadow: 
+            0 0 15px #4ecdc4,
+            0 0 30px rgba(78, 205, 196, 0.4);
+    }
+    50% { 
+        box-shadow: 
+            0 0 25px #4ecdc4,
+            0 0 50px rgba(78, 205, 196, 0.6);
+    }
+}
+
+/* Кнопка в ретро стиле */
+#congrats-modal button {
+    background: transparent;
+    border: 3px solid #ffe66d;
+    color: #ffe66d;
+    padding: 15px 40px;
+    font-size: 20px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 0; /* 🔥 Никаких скруглений! */
+    margin-top: 30px;
+    position: relative;
+    z-index: 3;
+    
+    /* Неоновое свечение */
+    box-shadow: 
+        0 0 10px #ffe66d,
+        inset 0 0 10px rgba(255, 230, 109, 0.2);
+    
+    transition: all 0.3s;
+}
+
+#congrats-modal button:hover {
+    background: #ffe66d;
+    color: #140a1e;
+    box-shadow: 
+        0 0 20px #ffe66d,
+        0 0 40px rgba(255, 230, 109, 0.6),
+        inset 0 0 20px rgba(255, 230, 109, 0.4);
+    transform: scale(1.05);
+}
+
+/* Декоративные угловые элементы */
+#congrats-modal .modal-content::before,
+#congrats-modal .modal-content::after {
+    content: "◆";
+    position: absolute;
+    color: #ff6b9d;
+    font-size: 24px;
+    text-shadow: 0 0 10px #ff6b9d;
+}
+
+#congrats-modal .modal-content::before {
+    top: 10px;
+    left: 10px;
+}
+
+#congrats-modal .modal-content::after {
+    bottom: 10px;
+    right: 10px;
+    transform: rotate(180deg);
+}
+
+/* 🎁 ЛУТБОКС — RETRO STYLE */
+
+#lootbox-scene {
+    padding: 50px 20px;
+    text-align: center;
+    min-height: 100vh;
+    background: url('../assets/main_bg.png') center/cover no-repeat;
+    position: relative;
+}
+
+#lootbox-scene::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(20, 10, 30, 0.85);
+    z-index: 0;
+}
+
+#lootbox-scene > * {
+    position: relative;
+    z-index: 1;
+}
+
+#lootbox-scene h2 {
+    font-family: 'Courier New', monospace;
+    font-size: 36px;
+    color: #ffe66d;
+    text-shadow: 
+        0 0 10px #ffe66d,
+        0 0 20px #ff6b9d;
+    margin-bottom: 40px;
+    letter-spacing: 3px;
+}
+
+.lootbox-wrapper {
+    width: 100%;
+    overflow: hidden;
+    margin: 40px 0;
+    position: relative;
+    border: 4px solid #4ecdc4;
+    border-radius: 0;
+    box-shadow: 
+        0 0 20px #4ecdc4,
+        0 0 40px rgba(78, 205, 196, 0.4);
+}
+
+.lootbox {
+    width: 800px;
+    max-width: 90%;
+    height: 200px;
+    margin: 0 auto;
+    background: rgba(20, 10, 30, 0.95);
+    border: none;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0;
+}
+
+.lootbox-items {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    height: 100%;
+    align-items: center;
+    transform: translateX(0);
+}
+
+.loot-item {
+    min-width: 140px;
+    height: 160px;
+    background: rgba(30, 20, 40, 0.9);
+    border: 3px solid;
+    border-radius: 0; /* 🔥 Никаких скруглений! */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    font-size: 12px;
+    flex-shrink: 0;
+    font-family: 'Courier New', monospace;
+}
+
+.loot-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+/* Редкость в ретро стиле */
+.loot-item.legendary { 
+    border-color: #ffe66d; 
+    box-shadow: 
+        0 0 15px #ffe66d,
+        inset 0 0 15px rgba(255, 230, 109, 0.3);
+    color: #ffe66d;
+}
+
+.loot-item.epic { 
+    border-color: #ff6b9d; 
+    box-shadow: 
+        0 0 15px #ff6b9d,
+        inset 0 0 15px rgba(255, 107, 157, 0.3);
+    color: #ff6b9d;
+}
+
+.loot-item.rare { 
+    border-color: #4ecdc4; 
+    box-shadow: 
+        0 0 15px #4ecdc4,
+        inset 0 0 15px rgba(78, 205, 196, 0.3);
+    color: #4ecdc4;
+}
+
+.loot-item.guaranteed { 
+    border-color: #c44569; 
+    box-shadow: 
+        0 0 20px #c44569,
+        inset 0 0 20px rgba(196, 69, 105, 0.4);
+    color: #c44569;
+    animation: guaranteedPulse 1.5s infinite;
+}
+
+@keyframes guaranteedPulse {
+    0%, 100% { 
+        box-shadow: 
+            0 0 20px #c44569,
+            inset 0 0 20px rgba(196, 69, 105, 0.4);
+    }
+    50% { 
+        box-shadow: 
+            0 0 30px #c44569,
+            inset 0 0 30px rgba(196, 69, 105, 0.6);
+    }
+}
+
+.selector {
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 4px;
+    background: #ffe66d;
+    transform: translateX(-50%);
+    z-index: 10;
+    box-shadow: 
+        0 0 10px #ffe66d,
+        0 0 20px #ffe66d;
+}
+
+#spin-btn {
+    font-size: 24px;
+    padding: 20px 50px;
+    background: transparent;
+    border: 4px solid #ff6b9d;
+    color: #ff6b9d;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    border-radius: 0;
+    cursor: pointer;
+    box-shadow: 
+        0 0 15px #ff6b9d,
+        inset 0 0 15px rgba(255, 107, 157, 0.2);
+    transition: all 0.3s;
+}
+
+#spin-btn:hover {
+    background: #ff6b9d;
+    color: #140a1e;
+    box-shadow: 
+        0 0 30px #ff6b9d,
+        0 0 60px rgba(255, 107, 157, 0.6);
+    transform: scale(1.05);
+}
+
+#spin-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 🎉 ФИНАЛЬНЫЙ ЭКРАН С СЕРТИФИКАТОМ */
+
+#final-prize {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: url('../assets/main_bg.png') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+#final-prize::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(20, 10, 30, 0.9);
+    z-index: 1;
+}
+
+#final-prize .modal-content {
+    background: rgba(30, 20, 40, 0.95);
+    border: 4px solid #c44569;
+    border-radius: 0;
+    padding: 50px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    z-index: 2;
+    box-shadow: 
+        0 0 30px #c44569,
+        0 0 60px rgba(196, 69, 105, 0.5);
+}
+
+#final-prize h2 {
+    font-family: 'Courier New', monospace;
+    font-size: 36px;
+    color: #ffe66d;
+    text-shadow: 
+        0 0 10px #ffe66d,
+        0 0 20px #ff6b9d;
+    margin-bottom: 30px;
+    letter-spacing: 3px;
+}
+
+.certificate-img {
+    width: 100%;
+    max-width: 300px;
+    border: 3px solid #4ecdc4;
+    border-radius: 0;
+    margin: 20px auto;
+    display: block;
+    box-shadow: 
+        0 0 20px #4ecdc4,
+        0 0 40px rgba(78, 205, 196, 0.4);
+}
+
+#final-prize p {
+    font-family: 'Courier New', monospace;
+    color: #4ecdc4;
+    font-size: 16px;
+    margin: 20px 0;
+    letter-spacing: 2px;
+}
+
+.get-prize-btn {
+    background: transparent;
+    border: 3px solid #ffe66d;
+    color: #ffe66d;
+    padding: 15px 40px;
+    font-size: 18px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+    border-radius: 0;
+    box-shadow: 
+        0 0 15px #ffe66d,
+        inset 0 0 15px rgba(255, 230, 109, 0.2);
+    transition: all 0.3s;
+}
+
+.get-prize-btn:hover {
+    background: #ffe66d;
+    color: #140a1e;
+    box-shadow: 
+        0 0 30px #ffe66d,
+        0 0 60px rgba(255, 230, 109, 0.6);
+    transform: scale(1.05);
 }

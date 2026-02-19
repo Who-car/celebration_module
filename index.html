@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>23 Февраля | Special Operation</title>
-    <!-- Подключаем стили -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <link rel="stylesheet" href="css/style.css">
-    <!-- Библиотека конфетти -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
@@ -19,18 +18,64 @@
         </div>
     </div>
 
-    <!-- 2. КОНТЕЙНЕР КАПЧИ (скрыт по умолчанию) -->
-    <div id="captcha-container" class="hidden">
-        <h2>ПРОВЕРКА БЕЗОПАСНОСТИ</h2>
-        <p>Соберите изображение (клик для поворота)</p>
-        <div id="puzzle-grid"></div>
+    <!-- 2. КАПЧА В СТИЛЕ GOOGLE (скрыта по умолчанию) -->
+    <div id="captcha-overlay" class="hidden">
+        <div class="captcha-modal">
+            <div class="captcha-header">
+                <span class="captcha-logo">reCAPTCHA</span>
+                <button class="captcha-close" onclick="closeCaptcha()">✕</button>
+            </div>
+            <div class="captcha-body">
+                <div class="captcha-instruction">Выберите все фрагменты в правильном порядке</div>
+                
+                <!-- Пазл -->
+                <div id="puzzle-grid"></div>
+                
+                <!-- Видео (скрыто до решения пазла) -->
+                <div id="captcha-video-container" class="hidden">
+                    <video id="captcha-video" playsinline>
+                        <source src="assets/captcha.mp4" type="video/mp4">
+                        Ваш браузер не поддерживает видео
+                    </video>
+                </div>
+                
+                <!-- Успех (скрыто до конца видео) -->
+                <div id="captcha-success" class="hidden">
+                    <div class="success-checkmark">
+                        <svg viewBox="0 0 52 52" class="checkmark">
+                            <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                            <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                        </svg>
+                    </div>
+                    <p>Подтверждено</p>
+                </div>
+            </div>
+            <div class="captcha-footer">
+                <div class="captcha-branding">
+                    <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA">
+                    <span>Privacy - Terms</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- 3. КОНТЕЙНЕР ИГРЫ (скрыт по умолчанию) -->
     <div id="game-container" class="hidden">
-        <h2>МИССИЯ: ДОСТАВИТЬ ГРУЗ</h2>
-        <p>WASD / Стрелки - движение | Пробел - огонь</p>
         <canvas id="game-canvas"></canvas>
+        <button id="pause-btn" onclick="gameOver(true)">Skip</button>
+        
+        <!-- Мобильное управление -->
+        <div class="mobile-controls" id="mobile-controls">
+            <div class="dpad">
+                <button class="dpad-btn up" data-key="ArrowUp">▲</button>
+                <div class="dpad-row">
+                    <button class="dpad-btn left" data-key="ArrowLeft">◀</button>
+                    <button class="dpad-btn right" data-key="ArrowRight">▶</button>
+                </div>
+                <button class="dpad-btn down" data-key="ArrowDown">▼</button>
+            </div>
+            <button class="fire-btn" data-key=" ">🔥</button>
+        </div>
     </div>
 
     <!-- 4. МОДАЛКА ПОЗДРАВЛЕНИЯ (скрыта) -->
@@ -58,7 +103,7 @@
     <div id="final-prize" class="modal hidden">
         <div class="modal-content">
             <h2>🎉 ПОЗДРАВЛЯЕМ! 🎉</h2>
-            <img src="assets/certificate.png" alt="Certificate" class="certificate-img">
+            <img src="assets/certificate.jpg" alt="Certificate" class="certificate-img">
             <p>Твой сертификат на 23 февраля!</p>
             <a href="https://your-certificate-link.com" target="_blank" class="get-prize-btn">
                 ПОЛУЧИТЬ СЕРТИФИКАТ
