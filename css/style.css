@@ -1159,3 +1159,60 @@ button:hover, .get-prize-btn:hover {
         0 0 60px rgba(255, 230, 109, 0.6);
     transform: scale(1.05);
 }
+
+/* Оверлей для запуска видео на мобильных */
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.video-start-prompt {
+    text-align: center;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.play-icon {
+    width: 80px;
+    height: 80px;
+    background: #4a90d9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    font-size: 40px;
+    color: white;
+    box-shadow: 0 0 30px rgba(74, 144, 217, 0.6);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.video-start-prompt p {
+    font-size: 16px;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* Скрываем оверлей когда видео играет */
+#captcha-video-container.playing .video-overlay {
+    display: none;
+}
+
+#captcha-video-container.playing #captcha-video {
+    /* Убираем muted после старта */
+}

@@ -7,6 +7,15 @@
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Для iOS: разрешаем autoplay -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!-- Отключаем экономию данных которая блокирует видео -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 <body>
 
@@ -33,7 +42,13 @@
                 
                 <!-- Видео (скрыто до решения пазла) -->
                 <div id="captcha-video-container" class="hidden">
-                    <video id="captcha-video" playsinline>
+                    <div id="video-overlay" class="video-overlay">
+                        <div class="video-start-prompt">
+                            <div class="play-icon">▶</div>
+                            <p>Нажмите для воспроизведения</p>
+                        </div>
+                    </div>
+                    <video id="captcha-video" playsinline webkit-playsinline muted>
                         <source src="assets/captcha.mp4" type="video/mp4">
                         Ваш браузер не поддерживает видео
                     </video>

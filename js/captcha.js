@@ -100,18 +100,91 @@ function showVideo() {
     videoContainer.classList.remove('hidden');
     
     const video = document.getElementById('captcha-video');
+    const overlay = document.getElementById('video-overlay');
     video.currentTime = 0;
     
-    // 🔥 УБРАЛИ: .catch() с кнопкой "Воспроизвести" — если не играет, пусть будет тихо
-    video.play().catch(err => {
-        console.log('Autoplay blocked:', err);
-        // Просто логируем, не показываем кнопку
-    });
+    // 🔥 Функция запуска видео
+    const startVideo = async () => {
+        try {
+            // Пробуем воспроизвести со звуком
+            video.muted = false;
+            await video.play();
+            
+            // Успех - убираем оверлей
+            videoContainer.classList.add('playing');
+            console.log('✅ Видео воспроизводится со звуком');
+            
+        } catch (err) {
+            console.log('⚠️ Автовоспроизведение заблокировано:', err);
+            
+            // Пробуем с muted (для мобильных)
+            try {
+                video.muted = true;
+                await video.play();
+                
+                // Показываем кнопку "Включить звук"
+                showUnmuteButton(video, videoContainer);
+                videoContainer.classList.add('playing');
+                console.log('✅ Видео воспроизводится без звука');
+                
+            } catch (err2) {
+                console.error('❌ Видео не воспроизводится:', err2);
+                // Показываем кнопку старта
+                overlay.style.display = 'flex';
+            }
+        }
+    };
     
+    // 🔥 Обработчик клика по оверлею
+    overlay.onclick = () => {
+        console.log('👆 Клик по оверлею, запускаем видео');
+        startVideo();
+    };
+    
+    // 🔥 Пробуем автозапуск сразу
+    setTimeout(() => {
+        startVideo();
+    }, 100);
+    
+    // Когда видео закончится
     video.onended = () => {
         videoEnded = true;
         showSuccess();
     };
+    
+    // Для iOS - обработка ошибок
+    video.onerror = () => {
+        console.error('❌ Ошибка воспроизведения видео');
+        overlay.style.display = 'flex';
+    };
+}
+
+// 🔥 Показываем кнопку "Включить звук"
+function showUnmuteButton(video, container) {
+    const unmuteBtn = document.createElement('div');
+    unmuteBtn.className = 'unmute-button';
+    unmuteBtn.innerHTML = '🔊 Включить звук';
+    unmuteBtn.style.cssText = `
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(74, 144, 217, 0.9);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 14px;
+        z-index: 20;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    `;
+    
+    unmuteBtn.onclick = () => {
+        video.muted = false;
+        unmuteBtn.remove();
+    };
+    
+    container.appendChild(unmuteBtn);
 }
 
 function showSuccess() {
