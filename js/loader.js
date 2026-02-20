@@ -30,9 +30,9 @@ function isMobile() {
 // Обновляем инструкцию при изменении размера окна
 function updateInstruction() {
     if (isMobile()) {
-        instructionEl.textContent = "👆 Нажмите в любом месте для старта";
+        instructionEl.textContent = "Нажмите в любом месте для старта";
     } else {
-        instructionEl.textContent = "⌨️ Нажмите ENTER для старта";
+        instructionEl.textContent = "Нажмите ENTER для старта";
     }
 }
 

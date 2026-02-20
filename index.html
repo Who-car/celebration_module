@@ -77,7 +77,6 @@
     <!-- 3. КОНТЕЙНЕР ИГРЫ (скрыт по умолчанию) -->
     <div id="game-container" class="hidden">
         <canvas id="game-canvas"></canvas>
-        <button id="pause-btn" onclick="gameOver(true)">Skip</button>
         
         <!-- Мобильное управление -->
         <div class="mobile-controls" id="mobile-controls">
@@ -98,13 +97,13 @@
         <div class="modal-content">
             <img id="congrats-img" src="" alt="Congrats">
             <h2 id="congrats-text"></h2>
-            <button onclick="openLootboxScene()">ЗАБРАТЬ ПРИЗ 🎁</button>
+            <button onclick="openLootboxScene()">ЗАБРАТЬ ПРИЗ</button>
         </div>
     </div>
 
     <!-- 5. СЦЕНА ЛУТБОКСА (скрыта) -->
     <div id="lootbox-scene" class="hidden">
-        <h2>ОТКРЫТИЕ ЛУТБОКСА</h2>
+        <h2>REWARD PROTOCOL ACTIVE</h2>
         <div class="lootbox-wrapper">
             <div class="lootbox">
                 <div class="selector"></div>

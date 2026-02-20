@@ -12,7 +12,7 @@ canvas.width = GRID_WIDTH * TILE_SIZE;
 canvas.height = GRID_HEIGHT * TILE_SIZE;
 
 // 🎯 ИГРОВЫЕ ПАРАМЕТРЫ
-const WIN_SCORE = 1000;
+const WIN_SCORE = 100;
 const POINTS_PER_ENEMY = 100;
 
 // 📦 ЗАГРУЗКА АССЕТОВ
@@ -169,7 +169,13 @@ class Wall {
         this.height = TILE_SIZE;
         this.destroyed = false;
         this.damage = { top: false, bottom: false, left: false, right: false };
+        this.hp = this.type === 1 ? 2 : Infinity;
     }
+
+    get left() { return this.x; }
+    get right() { return this.x + this.width; }
+    get top() { return this.y; }
+    get bottom() { return this.y + this.height; }
     
     getSprite() {
         if (this.destroyed) return null;
@@ -208,20 +214,20 @@ class Wall {
     }
     
     hit(direction) {
-        if (this.type === 2) return false; // Сталь не разрушается
-        
-        // Отмечаем повреждение с нужной стороны
+        if (this.type === 2) return false;
+
+        this.hp--;
+
+        // для визуала можно оставить повреждение одной стороны
         if (direction === 'top') this.damage.top = true;
         else if (direction === 'bottom') this.damage.bottom = true;
         else if (direction === 'left') this.damage.left = true;
         else if (direction === 'right') this.damage.right = true;
-        
-        // Если уже было повреждено - уничтожаем
-        if (this.damage.top && this.damage.bottom && 
-            this.damage.left && this.damage.right) {
+
+        if (this.hp <= 0) {
             this.destroyed = true;
         }
-        
+
         return true;
     }
 }
@@ -232,7 +238,7 @@ class Tank {
         this.y = y;
         this.width = 28;
         this.height = 28;
-        this.speed = isPlayer ? 2 : 1;
+        this.speed = isPlayer ? 2 : 1.5;
         this.direction = 0; // 0=top, 1=right, 2=bottom, 3=left
         this.isPlayer = isPlayer;
         this.cooldown = 0;
@@ -241,10 +247,17 @@ class Tank {
         this.alive = true;
 
         this.moveTimer = 0;
-        this.moveInterval = isPlayer ? 0 : 15; // Враги двигаются реже
+        this.moveInterval = isPlayer ? 0 : 3;
         this.directionChangeTimer = 0;
-        this.minDirectionTime = 30;
+        this.minDirectionTime = 120;
+        this.fireChance = 0.003;
+        this.stuckCounter = 0;
     }
+
+    get left() { return this.x; }
+    get right() { return this.x + this.width; }
+    get top() { return this.y; }
+    get bottom() { return this.y + this.height; }
     
     getSprite() {
         const prefix = this.isPlayer ? 'player' : 'enemy';
@@ -255,18 +268,17 @@ class Tank {
     }
     
     move(dx, dy) {
+        if (dx > 0) this.direction = 1;
+        else if (dx < 0) this.direction = 3;
+        else if (dy > 0) this.direction = 2;
+        else if (dy < 0) this.direction = 0;
+
         const newX = this.x + dx * this.speed;
         const newY = this.y + dy * this.speed;
         
         if (!this.checkCollision(newX, newY)) {
             this.x = newX;
             this.y = newY;
-            
-            // Определяем направление
-            if (dx > 0) this.direction = 1;
-            else if (dx < 0) this.direction = 3;
-            else if (dy > 0) this.direction = 2;
-            else if (dy < 0) this.direction = 0;
             
             // Анимация
             this.animationTimer++;
@@ -284,11 +296,13 @@ class Tank {
         // Границы карты
         if (x < 0 || x + this.width > canvas.width) return true;
         if (y < 0 || y + this.height > canvas.height) return true;
+
+        const padding = this.isPlayer ? 2 : 0;
         
         const tankRect = { 
-            left: x, 
-            right: x + this.width, 
-            top: y, 
+            left: x + padding, 
+            right: x + this.width - padding, 
+            top: y + padding, 
             bottom: y + this.height 
         };
         
@@ -297,9 +311,6 @@ class Tank {
             if (wall.destroyed) continue;
             if (rectIntersect(tankRect, wall)) return true;
         }
-        
-        // База
-        if (base && rectIntersect(tankRect, base)) return true;
         
         // Другие танки
         const others = this.isPlayer ? 
@@ -338,38 +349,46 @@ class Tank {
         if (!this.isPlayer && this.alive) {
             this.moveTimer++;
             this.directionChangeTimer++;
-            
+
             if (this.moveTimer >= this.moveInterval) {
                 this.moveTimer = 0;
-                
-                // Пробуем двигаться в текущем направлении
+
                 const dirs = [
-                    {dx: 0, dy: -1},  // up
-                    {dx: 1, dy: 0},   // right
-                    {dx: 0, dy: 1},   // down
-                    {dx: -1, dy: 0}   // left
+                    {dx: 0, dy: -1},
+                    {dx: 1, dy: 0},
+                    {dx: 0, dy: 1},
+                    {dx: -1, dy: 0}
                 ];
-                
+
                 const dir = dirs[this.direction];
                 const moved = this.move(dir.dx, dir.dy);
-                
-                // Если не смогли двигаться ИЛИ пора менять направление
-                if (!moved || this.directionChangeTimer > this.minDirectionTime) {
-                    // Пробуем случайное направление
-                    let newDirection;
+
+                if (!moved) {
+                    this.stuckCounter++;
+                } else {
+                    this.stuckCounter = 0;
+                }
+
+                // Меняем направление только если:
+                // - долго ехали
+                // - реально застряли
+                if (this.directionChangeTimer > this.minDirectionTime || this.stuckCounter > 10) {
                     let attempts = 0;
+                    let newDirection;
+
                     do {
                         newDirection = Math.floor(Math.random() * 4);
                         attempts++;
                     } while (attempts < 10 && !this.canMoveInDirection(newDirection));
-                    
+
                     this.direction = newDirection;
                     this.directionChangeTimer = 0;
+                    this.stuckCounter = 0;
                 }
             }
-            
-            // Случайная стрельба
-            if (Math.random() < 0.015) {
+
+            // Реже стреляем
+            if (Math.random() < this.fireChance) {
                 this.shoot();
             }
         }
@@ -413,6 +432,11 @@ class Bullet {
         this.direction = direction;
         this.active = true;
     }
+
+    get left() { return this.x; }
+    get right() { return this.x + this.width; }
+    get top() { return this.y; }
+    get bottom() { return this.y + this.height; }
     
     getSprite() {
         const dirs = ['top', 'right', 'bottom', 'left'];
@@ -573,9 +597,6 @@ function initGame() {
     spawnEnemy(9 * TILE_SIZE, 0 * TILE_SIZE);          // Центр
     spawnEnemy(18 * TILE_SIZE, 0 * TILE_SIZE);         // Право
     
-    console.log('Игра запущена! Игрок:', player);
-    console.log('Враги:', enemies.length);
-    
     // Запускаем игровой цикл
     gameLoop();
     
@@ -604,7 +625,7 @@ function update() {
     
     // 🔥 УПРАВЛЕНИЕ ИГРОКОМ
     if (keys['ArrowUp'] || keys['w'] || keys['W']) {
-        player.move(0, -1);
+        let moved = player.move(0, -1); 
     }
     if (keys['ArrowDown'] || keys['s'] || keys['S']) {
         player.move(0, 1);
@@ -679,19 +700,23 @@ function gameLoop() {
 
 function gameOver(won) {
     gameRunning = false;
-    
+
     setTimeout(() => {
-        document.getElementById('game-container').classList.add('hidden');
-        
+
         if (won) {
-            // Победа!
+            document.getElementById('game-container').classList.add('hidden');
             showCongratulations();
         } else {
-            // Поражение
             alert(`GAME OVER\nScore: ${score}`);
-            // Можно вернуть на терминал или перезапустить
-            location.reload();
+
+            // Очистка перед рестартом
+            bullets = [];
+            enemies = [];
+            walls = [];
+
+            initGame(); // запускаем заново
         }
+
     }, 500);
 }
 
@@ -733,7 +758,6 @@ function setupMobileControls() {
 
 // Инициализация
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM загружен');
     loadAssets();
     setupControls();
     setupMobileControls();
