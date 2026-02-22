@@ -1,9 +1,9 @@
 const prizes = [
-    { name: "RTX 5090", rarity: "legendary", img: "assets/rtx_5090.png" },
-    { name: "64GB RAM", rarity: "epic", img: "assets/ram_64.png" },
-    { name: "Аниме фигурка", rarity: "rare", img: "assets/figurka-anime.png" },
-    { name: "Протеин 100 кг", rarity: "rare", img: "assets/protein.png" },
-    { name: "Нож-бабочка", rarity: "legendary", img: "assets/knife.png" },
+    { name: "RTX 5090", rarity: "legendary", img: "assets/rtx_5090.webp" },
+    { name: "64GB RAM", rarity: "epic", img: "assets/ram_64.webp" },
+    { name: "Аниме фигурка", rarity: "rare", img: "assets/figurka-anime.webp" },
+    { name: "Протеин 100 кг", rarity: "rare", img: "assets/protein.webp" },
+    { name: "Нож-бабочка", rarity: "legendary", img: "assets/knife.webp" },
     { name: "Тайный приз", rarity: "guaranteed", img: "assets/random.webp" }
 ];
 

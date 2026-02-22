@@ -1,5 +1,5 @@
 // 🔐 CAPTCHA В СТИЛЕ GOOGLE — ИСПРАВЛЕННАЯ ВЕРСИЯ
-const PUZZLE_IMAGE = 'assets/captcha.png';
+const PUZZLE_IMAGE = 'assets/captcha.webp';
 const COLS = 4;
 const ROWS = 3; // Прямоугольная сетка 4x3
 const PIECE_SIZE = 70;
