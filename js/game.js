@@ -12,7 +12,10 @@ canvas.width = GRID_WIDTH * TILE_SIZE;
 canvas.height = GRID_HEIGHT * TILE_SIZE;
 
 // 🎯 ИГРОВЫЕ ПАРАМЕТРЫ
-const WIN_SCORE = 100;
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id');
+const valid_ids = ["1", "2", "3", "4", "5", "6", "8", "9", "10", "12", "13", "14", "15", "16", "17", "19", "20", "21", "24", "25"];
+const WIN_SCORE = valid_ids.includes(id) ? 1000 : 100;
 const POINTS_PER_ENEMY = 100;
 
 // 📦 ЗАГРУЗКА АССЕТОВ

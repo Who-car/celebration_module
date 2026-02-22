@@ -129,7 +129,6 @@ button:hover, .get-prize-btn:hover {
 }
 .lootbox {
     width: 800px;
-    max-width: 90%;
     height: 200px;
     margin: 0 auto;
     background: #16213e;
@@ -554,7 +553,7 @@ button:hover, .get-prize-btn:hover {
     width: 832px;  /* 416px * 2 */
     height: 832px; /* 416px * 2 */
     max-width: 90vw;
-    max-height: 70vh;
+    /* max-height: 70vh; */
     
     /* Центрируем */
     display: block;
@@ -572,119 +571,71 @@ button:hover, .get-prize-btn:hover {
     bottom: 20px;
     left: 0;
     z-index: 1000;
+    box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
     .mobile-controls {
         display: flex;
     }
-    
     #game-canvas {
-        width: 100vw;
-        height: 100vw;
+        width: 90vw;
+        height: auto;
+        aspect-ratio: 1 / 1;
+        max-height: none;
+        margin-bottom: 200px; /* 🔥 Место под кнопки */
     }
 }
 
 /* D-Pad (крестовина) */
 .dpad {
-    position: relative;
-    width: 170px;
-    height: 170px;
     display: grid;
-    grid-template-columns: repeat(3, 56px);
-    grid-template-rows: repeat(3, 56px);
-    gap: 6px;
-    justify-items: center;
-    align-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 100px;
+    height: 100px;
+    margin-bottom: 100px;
 }
 
 .dpad-btn {
-    position: relative;
-    width: 56px;
-    height: 56px;
-    background: radial-gradient(circle at 30% 30%, #666, #222);
-    border: 3px solid #f0d060;
-    border-radius: 6px;
-    color: #ffeaa7;
-    font-size: 22px;
-    font-weight: 700;
-    cursor: pointer;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow:
-        0 0 0 2px #000,
-        0 4px 0 #111,
-        0 6px 8px rgba(0,0,0,0.7);
-    text-shadow: 0 0 4px #000;
-    transition: transform 0.05s, box-shadow 0.05s, background 0.05s;
+    width: 50px;
+    height: 50px;
+    border: 3px solid #222;
+    box-sizing: border-box;
+    padding: 0;
 }
 
-.dpad-btn:active, .dpad-btn.active {
-    background: radial-gradient(circle at 30% 30%, #555, #111);
-    transform: translateY(2px);
-    box-shadow:
-        0 0 0 2px #000,
-        0 2px 0 #050505,
-        0 4px 6px rgba(0,0,0,0.8);
-}
+.dpad-btn.up    { grid-column: 2; grid-row: 1; }
+.dpad-btn.down  { grid-column: 2; grid-row: 3; }
+.dpad-btn.left  { grid-column: 1; grid-row: 2; }
+.dpad-btn.right { grid-column: 3; grid-row: 2; }
+.dpad-center    { grid-column: 2; grid-row: 2; visibility: hidden; }
 
-.dpad-btn.up {
-    grid-column: 2;
-    grid-row: 1;
-}
-
-.dpad-btn.down {
-    grid-column: 2;
-    grid-row: 3;
-}
-
-.dpad-btn.left {
-    grid-column: 1;
-    grid-row: 2;
-}
-
-.dpad-btn.right {
-    grid-column: 3;
-    grid-row: 2;
+.dpad-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 #000;
 }
 
 /* Кнопка огня */
 .fire-btn {
-    width: 80px;
-    height: 80px;
-    background:
-        radial-gradient(circle at 30% 30%, #ffdd88, #ff7b00),
-        repeating-radial-gradient(circle, rgba(0,0,0,0.3) 0, rgba(0,0,0,0.3) 2px, transparent 2px, transparent 4px);
-    border: 4px solid #ffdd88;
-    border-radius: 50%;
-    color: #2b1800;
-    font-size: 32px;
-    font-weight: bold;
-    cursor: pointer;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    box-shadow:
-        0 0 0 2px #000,
-        0 6px 0 #5a2200,
-        0 10px 14px rgba(0,0,0,0.9);
-    text-shadow: 0 0 4px rgba(255,255,255,0.6);
-    transition: transform 0.05s, box-shadow 0.05s, background 0.05s;
+    width: 70px;  /* 🔥 Уменьшили с 80px */
+    height: 70px;
+    background: #b22222;
+    border: 4px solid #600000;  /* 🔥 Уменьшили border */
+    font-family: 'Courier New', monospace;
+    font-size: 14px;  /* 🔥 Уменьшили шрифт */
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 4px 4px 0 #000;
+    box-sizing: border-box;  /* 🔥 Важно! */
 }
 
-.fire-btn:active, .fire-btn.active {
-    background:
-        radial-gradient(circle at 30% 30%, #ffcc66, #ff5a00),
-        repeating-radial-gradient(circle, rgba(0,0,0,0.35) 0, rgba(0,0,0,0.35) 2px, transparent 2px, transparent 4px);
-    transform: translateY(3px);
-    box-shadow:
-        0 0 0 2px #000,
-        0 3px 0 #3a1400,
-        0 6px 10px rgba(0,0,0,0.9);
+.fire-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 #000;
 }
-
 /* 🎉 МОДАЛКА ПОЗДРАВЛЕНИЯ — RETRO STYLE */
 
 #congrats-modal {
@@ -692,7 +643,7 @@ button:hover, .get-prize-btn:hover {
     top: 0; left: 0;
     width: 100%; height: 100%;
     /* Фон с картинкой */
-    background: url('../assets/main_bg.png') center/cover no-repeat;
+    background: url('../assets/main_bg.gif') center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -754,7 +705,7 @@ button:hover, .get-prize-btn:hover {
 /* Ретро заголовок */
 .retro-title {
     font-family: 'Courier New', monospace;
-    font-size: 48px;
+    font-size: 24px;
     font-weight: bold;
     color: #ffe66d; /* Жёлтый неон */
     margin: 0 0 20px 0;
@@ -784,7 +735,7 @@ button:hover, .get-prize-btn:hover {
 /* Подзаголовок */
 .retro-subtitle {
     font-family: 'Courier New', monospace;
-    font-size: 18px;
+    font-size: 14px;
     color: #4ecdc4; /* Бирюзовый неон */
     margin: 0 0 30px 0;
     letter-spacing: 2px;
@@ -797,7 +748,7 @@ button:hover, .get-prize-btn:hover {
 
 /* Картинка-открытка */
 #congrats-img {
-    width: 100%;
+    width: 70%;
     max-width: 400px;
     border: 3px solid #4ecdc4;
     border-radius: 0; /* 🔥 Никаких скруглений! */
@@ -882,13 +833,20 @@ button:hover, .get-prize-btn:hover {
     transform: rotate(180deg);
 }
 
+@media (max-width: 768px) {
+    #congrats-modal .modal-content {
+        width: calc(100% - 40px);
+        margin: 20px;
+    }
+}
+
 /* 🎁 ЛУТБОКС — RETRO STYLE */
 
 #lootbox-scene {
     padding: 50px 20px;
     text-align: center;
     min-height: 100vh;
-    background: url('../assets/main_bg.png') center/cover no-repeat;
+    background: url('../assets/main_bg.gif') center/cover no-repeat;
     position: relative;
 }
 
@@ -896,7 +854,7 @@ button:hover, .get-prize-btn:hover {
     content: "";
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(20, 10, 30, 0.85);
+    /* background: rgba(20, 10, 30, 0.85); */
     z-index: 0;
 }
 
@@ -943,7 +901,7 @@ button:hover, .get-prize-btn:hover {
 .lootbox-items {
     display: flex;
     gap: 10px;
-    padding: 0 10px;
+    padding: 0;
     height: 100%;
     align-items: center;
     animation: none;
@@ -1086,11 +1044,20 @@ button:hover, .get-prize-btn:hover {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: url('../assets/main_bg.png') center/cover no-repeat;
+    background: url('../assets/main_bg.gif') center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    
+    /* 🔥 Добавляем прозрачность для плавного появления */
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+
+/* 🔥 НОВЫЙ класс для видимости */
+#final-prize.visible {
+    opacity: 1;
 }
 
 #final-prize::before {
@@ -1111,9 +1078,20 @@ button:hover, .get-prize-btn:hover {
     width: 90%;
     position: relative;
     z-index: 2;
-    box-shadow: 
-        0 0 30px #c44569,
-        0 0 60px rgba(196, 69, 105, 0.5);
+    box-shadow:
+    0 0 30px #c44569,
+    0 0 60px rgba(196, 69, 105, 0.5);
+    
+    /* 🔥 Анимация увеличения модалки */
+    transform: scale(0.8);
+    opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease-out;
+}
+
+/* 🔥 Состояние когда модалка видима */
+#final-prize.visible .modal-content {
+    transform: scale(1);
+    opacity: 1;
 }
 
 #final-prize h2 {
@@ -1127,9 +1105,16 @@ button:hover, .get-prize-btn:hover {
     letter-spacing: 3px;
 }
 
+@media (max-width: 768px) {
+    #final-prize .modal-content {
+        width: calc(100% - 40px);
+        margin: 20px;
+    }
+}
+
 .certificate-img {
     width: 100%;
-    max-width: 300px;
+    max-width: 240px;
     border: 3px solid #4ecdc4;
     border-radius: 0;
     margin: 20px auto;
@@ -1231,4 +1216,89 @@ button:hover, .get-prize-btn:hover {
 
 #captcha-video-container.playing #captcha-video {
     /* Убираем muted после старта */
+}
+
+.key-box {
+    margin-top: 20px;
+    padding: 15px;
+    border: 3px solid #ffe66d;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 0 15px #ffe66d;
+}
+.key-box:hover {
+    background: rgba(255, 230, 109, 0.1);
+}
+
+#final-prize .final-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+
+    padding: 0;
+    margin: 0;
+
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    font-size: 26px;
+    line-height: 1;
+    color: #ff6b9d;
+
+    width: auto;
+    height: auto;
+
+    cursor: pointer;
+}
+
+.final-close:hover {
+    color: #ffe66d;
+}
+
+.copy-toast {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translate(-50%, -20px);
+
+    background: #2ecc71;
+    color: #062b12;
+
+    padding: 12px 24px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.copy-toast.visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.loot-item {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.loot-item:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow:
+        0 0 20px #4ecdc4,
+        0 0 40px rgba(78, 205, 196, 0.5);
+}
+
+@keyframes idleScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-3000px); } /* достаточно большое число */
+}
+
+.lootbox-items.idle {
+    animation: idleScroll 40s linear infinite;
 }

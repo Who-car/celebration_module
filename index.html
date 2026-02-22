@@ -16,6 +16,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
 <body>
 
@@ -82,13 +83,11 @@
         <div class="mobile-controls" id="mobile-controls">
             <div class="dpad">
                 <button class="dpad-btn up" data-key="ArrowUp">▲</button>
-                <div class="dpad-row">
-                    <button class="dpad-btn left" data-key="ArrowLeft">◀</button>
-                    <button class="dpad-btn right" data-key="ArrowRight">▶</button>
-                </div>
+                <button class="dpad-btn left" data-key="ArrowLeft">◀</button>
+                <button class="dpad-btn right" data-key="ArrowRight">▶</button>
                 <button class="dpad-btn down" data-key="ArrowDown">▼</button>
             </div>
-            <button class="fire-btn" data-key=" ">🔥</button>
+            <button class="fire-btn" data-key=" ">●</button>
         </div>
     </div>
 
@@ -97,7 +96,7 @@
         <div class="modal-content">
             <img id="congrats-img" src="" alt="Congrats">
             <h2 id="congrats-text"></h2>
-            <button onclick="openLootboxScene()">ЗАБРАТЬ ПРИЗ</button>
+            <button onclick="openLootboxScene()">Получить подарок</button>
         </div>
     </div>
 
@@ -116,10 +115,12 @@
     <!-- 6. ФИНАЛЬНЫЙ ЭКРАН (скрыт) -->
     <div id="final-prize" class="modal hidden">
         <div class="modal-content">
-            <h2>🎉 ПОЗДРАВЛЯЕМ! 🎉</h2>
+            <div class="copy-toast">Скопировано в буфер обмена</div>
+            <button class="final-close" onclick="closeFinalPrize()">✕</button>
+            <h2>ПОЗДРАВЛЯЕМ!</h2>
             <img src="assets/certificate.jpg" alt="Certificate" class="certificate-img">
-            <p>Твой сертификат на 23 февраля!</p>
-            <a href="https://your-certificate-link.com" target="_blank" class="get-prize-btn">
+            <p>Твой подарок на 23 февраля!</p>
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1" target="_blank" class="get-prize-btn">
                 ПОЛУЧИТЬ СЕРТИФИКАТ
             </a>
         </div>
