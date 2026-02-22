@@ -21,7 +21,7 @@ body {
     background: #0a0a0a;
 }
 .terminal-text {
-    font-size: 18px;
+    font-size: 14px;
     line-height: 1.5;
 }
 .cursor {
@@ -791,6 +791,7 @@ button:hover, .get-prize-btn:hover {
     position: relative;
     z-index: 3;
     margin-top: 0;
+    margin-bottom: 8px;
     
     /* Неоновое свечение */
     box-shadow: 
