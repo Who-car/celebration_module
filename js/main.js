@@ -154,11 +154,12 @@ const obs4 = new IntersectionObserver(entries => {
 
   vid4Wrap.classList.add('visible');
 
-  mainVideo.play().catch(() => {});
-  setMuted(mainVideo, 'sound4', false);
+  mainVideo.play()
+    .then(() => { setMuted(mainVideo, 'sound4', false); })
+    .catch(() => {});
 
   obs4.disconnect();
-}, { threshold: 0.35 });
+}, { threshold: 0.15 });
 obs4.observe(document.getElementById('screen-4'));
 
 
