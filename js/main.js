@@ -11,10 +11,9 @@ function hideLoading() {
   loadingDone = true;
   loadingScreen.classList.add('fade-out');
   setTimeout(() => loadingScreen.remove(), 900);
-  // Start + unmute intro video only after loader disappears
+  // Start intro video (already muted via HTML attr) after loader fade
   setTimeout(() => {
-    introVideo.play().catch(() => {});
-    setMuted(introVideo, 'sound1', false);
+    introVideo.play().catch((e) => { console.log(e); });
   }, 950);
 }
 
@@ -95,6 +94,25 @@ function makeSoundToggle(btnId, video) {
 
 makeSoundToggle('sound1', introVideo);
 makeSoundToggle('sound4', mainVideo);
+
+// Unmute intro video on first user gesture (tap/click anywhere)
+function unmuteOnFirstGesture() {
+  if (!introVideo.muted) return;
+  // Only unmute if we're still on screen 1 (video playing or not ended)
+  if (!introVideo.ended) {
+    setMuted(introVideo, 'sound1', false);
+  }
+  var loadingText = document.querySelector("#loading-text"); // Ищет первый элемент с этим классом
+  if (loadingText) {
+    loadingText.textContent = "Подождите...";
+  } else {
+    console.log(document.querySelector("#loading-text"))
+  }
+  document.removeEventListener('touchstart', unmuteOnFirstGesture);
+  document.removeEventListener('click', unmuteOnFirstGesture);
+}
+document.addEventListener('touchstart', unmuteOnFirstGesture, { once: true });
+document.addEventListener('click', unmuteOnFirstGesture, { once: true });
 
 
 // ── Screen 2: play cat video + confetti on enter ────────
