@@ -18,44 +18,30 @@
     <p id="loading-text">Нажми на кота для старта</p>
   </div>
 
-  <!-- ─── SCREEN 1: INTRO VIDEO ─────────────────────────── -->
-  <section class="screen" id="screen-1">
+  <!-- ─── SECTION 1: INTRO VIDEO ────────────────────────── -->
+  <section class="section" id="screen-1">
     <video id="intro-video" muted playsinline>
       <source src="assets/0317%20(1)(3).mp4" type="video/mp4">
     </video>
 
-    <!-- replay overlay (shown after video ends) -->
     <div id="replay-overlay">
       <button id="replay-btn" aria-label="Посмотреть еще раз">↺</button>
     </div>
 
-    <!-- sound toggle -->
     <button class="sound-toggle" id="sound1" aria-label="Звук">🔇</button>
-
-    <button class="scroll-down dark" data-target="screen-2" aria-label="Следующий экран">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
   </section>
 
-  <!-- ─── SCREEN 2: BIRTHDAY + CAT ──────────────────────── -->
-  <section class="screen" id="screen-2">
-    <div class="screen-top">
-      <h1 class="bday-title">Happy Birthday<br>to Корино</h1>
-      <p class="bday-sub">Поздравляем с днем рождения самого крутого гэнгста на районе. Желаю тебе ЛЮБВИ, ЗДОРОВЬЯ, и конечно же A LOT OF MONEY</p>
-    </div>
-    <div class="screen-bottom">
-      <video id="cat-video" muted playsinline loop autoplay preload="auto">
-        <source src="assets/oiiaoiia-cat-happy-birthday-to-you-spinning-cat-uia-meme_sU7WDBej.mp4" type="video/mp4">
-      </video>
-    </div>
-
-    <button class="scroll-down" data-target="screen-3" aria-label="Следующий экран">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
+  <!-- ─── SECTION 2: BIRTHDAY + CAT ─────────────────────── -->
+  <section class="section" id="screen-2">
+    <h1 class="bday-title">Happy Birthday<br>to Корино</h1>
+    <p class="bday-sub">Поздравляем с днем рождения самого крутого гэнгста на районе. Желаю тебе ЛЮБВИ, ЗДОРОВЬЯ, и конечно же A LOT OF MONEY</p>
+    <video id="cat-video" muted playsinline loop autoplay preload="auto">
+      <source src="assets/oiiaoiia-cat-happy-birthday-to-you-spinning-cat-uia-meme_sU7WDBej.mp4" type="video/mp4">
+    </video>
   </section>
 
-  <!-- ─── SCREEN 3: PHOTO + ACROSTIC ────────────────────── -->
-  <section class="screen" id="screen-3">
+  <!-- ─── SECTION 3: PHOTO + ACROSTIC ───────────────────── -->
+  <section class="section" id="screen-3">
     <div class="s3-row">
       <div class="s3-left">
         <img
@@ -75,39 +61,26 @@
         </div>
       </div>
     </div>
-
-    <button class="scroll-down" data-target="screen-4" aria-label="Следующий экран">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
   </section>
 
-  <!-- ─── SCREEN 4: FULL-WIDTH VIDEO ────────────────────── -->
-  <section class="screen" id="screen-4">
+  <!-- ─── SECTION 4: FULL-WIDTH VIDEO ───────────────────── -->
+  <section class="section" id="screen-4">
     <div class="vid4-wrap slide-up">
       <video id="main-video" muted playsinline>
         <source src="assets/0317.mp4" type="video/mp4">
       </video>
     </div>
-    <!-- sound toggle -->
     <button class="sound-toggle" id="sound4" aria-label="Звук">🔇</button>
-
-    <button class="scroll-down" data-target="screen-5" aria-label="Следующий экран">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
   </section>
 
-  <!-- ─── SCREEN 5: GIFT ────────────────────────────────── -->
-  <section class="screen" id="screen-5">
+  <!-- ─── SECTION 5: GIFT ────────────────────────────────── -->
+  <section class="section" id="screen-5">
     <p class="gift-hint">Сделай хлопок и нажми на подарок</p>
     <img src="assets/free-png.ru-291.png" id="gift-img" alt="Подарок">
-
-    <button class="scroll-down" data-target="screen-6" aria-label="Следующий экран">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
   </section>
 
-  <!-- ─── SCREEN 6: EASTER EGG ──────────────────────────── -->
-  <section class="screen" id="screen-6">
+  <!-- ─── SECTION 6: EASTER EGG ─────────────────────────── -->
+  <section class="section" id="screen-6">
     <p class="last-msg">Что ты еще ищешь?<br>Ты уже получила подарок</p>
   </section>
 

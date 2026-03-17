@@ -48,26 +48,17 @@ Promise.all([...imgPromises, ...vidPromises]).then(() => {
 setTimeout(hideLoading, 18000);
 
 
-// ── Screen 1: replay overlay + sound toggle ─────────────
+// ── Section 1: replay overlay + sound toggle ─────────────
 const introVideo     = document.getElementById('intro-video');
 const replayOverlay  = document.getElementById('replay-overlay');
 const replayBtn      = document.getElementById('replay-btn');
 
-let autoScrollDone = false;
-
 introVideo.addEventListener('ended', () => {
   replayOverlay.classList.add('show');
-  if (!autoScrollDone) {
-    autoScrollDone = true;
-    setTimeout(() => {
-      document.getElementById('screen-2').scrollIntoView({ behavior: 'smooth' });
-    }, 800);
-  }
 });
 
 replayBtn.addEventListener('click', () => {
   replayOverlay.classList.remove('show');
-  document.getElementById('screen-1').scrollIntoView({ behavior: 'smooth' });
   setTimeout(() => {
     introVideo.currentTime = 0;
     introVideo.play().catch(() => {});
@@ -75,7 +66,7 @@ replayBtn.addEventListener('click', () => {
 });
 
 
-// ── Sound toggles (screens 1 & 4) ──────────────────────
+// ── Sound toggles (sections 1 & 4) ──────────────────────
 const mainVideo = document.getElementById('main-video');
 
 function setMuted(video, btnId, muted) {
@@ -98,15 +89,12 @@ makeSoundToggle('sound4', mainVideo);
 // Unmute intro video on first user gesture (tap/click anywhere)
 function unmuteOnFirstGesture() {
   if (!introVideo.muted) return;
-  // Only unmute if we're still on screen 1 (video playing or not ended)
   if (!introVideo.ended) {
     setMuted(introVideo, 'sound1', false);
   }
-  var loadingText = document.querySelector("#loading-text"); // Ищет первый элемент с этим классом
+  var loadingText = document.querySelector("#loading-text");
   if (loadingText) {
     loadingText.textContent = "Подождите...";
-  } else {
-    console.log(document.querySelector("#loading-text"))
   }
   document.removeEventListener('touchstart', unmuteOnFirstGesture);
   document.removeEventListener('click', unmuteOnFirstGesture);
@@ -115,7 +103,7 @@ document.addEventListener('touchstart', unmuteOnFirstGesture, { once: true });
 document.addEventListener('click', unmuteOnFirstGesture, { once: true });
 
 
-// ── Screen 2: play cat video + confetti on enter ────────
+// ── Section 2: play cat video + confetti on enter ────────
 const catVideo    = document.getElementById('cat-video');
 let confettiFired = false;
 
@@ -135,8 +123,7 @@ const obs2 = new IntersectionObserver(entries => {
 obs2.observe(document.getElementById('screen-2'));
 
 
-// ── Screen 3: slide-up photo + acrostic ────────────────
-// Photo has its own CSS classes (not using .slide-up)
+// ── Section 3: slide-up photo + acrostic ────────────────
 const karinaPhoto = document.getElementById('karina-photo');
 const obsPhoto = new IntersectionObserver(entries => {
   if (entries[0].isIntersecting) {
@@ -146,7 +133,6 @@ const obsPhoto = new IntersectionObserver(entries => {
 }, { threshold: 0.15 });
 obsPhoto.observe(karinaPhoto);
 
-// Each acrostic line individually
 document.querySelectorAll('#screen-3 .slide-up').forEach(el => {
   const obs = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) {
@@ -158,7 +144,7 @@ document.querySelectorAll('#screen-3 .slide-up').forEach(el => {
 });
 
 
-// ── Screen 4: slide-up video + play + auto-scroll ───────
+// ── Section 4: slide-up video + play ────────────────────
 const vid4Wrap        = document.querySelector('.vid4-wrap');
 let screen4Triggered  = false;
 
@@ -174,10 +160,6 @@ const obs4 = new IntersectionObserver(entries => {
   obs4.disconnect();
 }, { threshold: 0.35 });
 obs4.observe(document.getElementById('screen-4'));
-
-mainVideo.addEventListener('ended', () => {
-  document.getElementById('screen-5').scrollIntoView({ behavior: 'smooth' });
-});
 
 
 // ── Modal helpers ───────────────────────────────────────
@@ -203,16 +185,7 @@ modal.addEventListener('click', e => {
 });
 
 
-// ── Scroll-down arrows ──────────────────────────────────
-document.querySelectorAll('.scroll-down').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = document.getElementById(btn.dataset.target);
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
-  });
-});
-
-
-// ── Screen 5: gift modal ────────────────────────────────
+// ── Section 5: gift modal ───────────────────────────────
 const giftImg = document.getElementById('gift-img');
 
 const MESSAGES = [

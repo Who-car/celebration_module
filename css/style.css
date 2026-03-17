@@ -41,26 +41,21 @@ body {
   50%       { opacity: 0.35; }
 }
 
-/* ── Generic Screen ───────────────────────────────── */
-.screen {
-  min-height: 100dvh;
-  min-height: 100vh;
+/* ── Generic Section ──────────────────────────────── */
+.section {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
+  padding: 96px 16px;
   overflow: hidden;
 }
 
-/* ── Screen 1 ─────────────────────────────────────── */
-#screen-1 {
-  padding: 16px;
-}
+/* ── Section 1 ────────────────────────────────────── */
 #intro-video {
   width: 100%;
-  max-height: calc(100dvh - 32px);
-  max-height: calc(100vh - 32px);
+  max-height: 80vh;
   object-fit: contain;
   display: block;
   border-radius: 12px;
@@ -105,7 +100,7 @@ body {
   transform: scale(0.9);
 }
 
-/* Sound toggle button (screens 1 & 4) */
+/* Sound toggle button (sections 1 & 4) */
 .sound-toggle {
   position: absolute;
   bottom: 22px;
@@ -127,26 +122,9 @@ body {
 }
 .sound-toggle:active { background: rgba(255, 255, 255, 0.35); }
 
-/* ── Screen 2 ─────────────────────────────────────── */
-#screen-2 { padding: 0; }
-
-.screen-top {
-  flex: 1;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  padding: 16px 20px 8px;
-}
-.screen-bottom {
-  flex: 1;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 20px 12px;
+/* ── Section 2 ────────────────────────────────────── */
+#screen-2 {
+  gap: 20px;
 }
 
 .bday-title {
@@ -167,12 +145,12 @@ body {
 
 #cat-video {
   width: 100%;
-  max-height: 46vh;
+  max-height: 50vh;
   object-fit: contain;
   display: block;
 }
 
-/* ── Screen 3 ─────────────────────────────────────── */
+/* ── Section 3 ────────────────────────────────────── */
 #screen-3 { padding: 20px 16px; }
 
 .s3-row {
@@ -210,7 +188,6 @@ body {
   object-position: center;
   display: block;
   flex-shrink: 0;
-  /* slide-up animation */
   opacity: 0;
   transform: translateY(52px);
   transition: opacity 0.55s ease, transform 0.55s ease;
@@ -236,12 +213,11 @@ body {
   color: #e91e8c;
 }
 
-/* ── Screen 4 ─────────────────────────────────────── */
+/* ── Section 4 ────────────────────────────────────── */
 #screen-4 {
   background: #fff;
-  padding: 16px;
+  padding: 48px 16px;
 }
-/* Sound toggle on dark video needs contrast against light bg */
 #screen-4 .sound-toggle {
   background: rgba(0, 0, 0, 0.12);
   border-color: rgba(0, 0, 0, 0.3);
@@ -258,8 +234,8 @@ body {
   border-radius: 14px;
 }
 
-/* ── Screen 5 ─────────────────────────────────────── */
-#screen-5 { gap: 28px; padding: 24px; }
+/* ── Section 5 ────────────────────────────────────── */
+#screen-5 { gap: 28px; padding: 48px 24px; }
 
 .gift-hint {
   font-size: clamp(1rem, 4.5vw, 1.3rem);
@@ -276,10 +252,9 @@ body {
 }
 #gift-img:active { transform: scale(0.93); }
 
-/* ── Screen 6 ─────────────────────────────────────── */
+/* ── Section 6 ────────────────────────────────────── */
 #screen-6 {
-  justify-content: flex-end;
-  padding: 24px 24px 64px;
+  padding: 48px 24px 80px;
 }
 .last-msg {
   font-size: clamp(0.85rem, 3.5vw, 1.1rem);
@@ -287,38 +262,7 @@ body {
   color: #aaa;
   text-align: center;
   line-height: 1.5;
-}
-
-/* ── Scroll-down arrow ────────────────────────────── */
-.scroll-down {
-  position: absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 6px;
-  z-index: 10;
-  color: rgba(0, 0, 0, 0.3);
-  animation: bounce-arrow 1.8s ease-in-out infinite;
-  -webkit-tap-highlight-color: transparent;
-}
-/* On dark-background screens use a light colour */
-.scroll-down.dark {
-  color: rgba(255, 255, 255, 0.55);
-}
-/* Screen 4 has white bg but dark video — arrow sits outside video so use dark colour */
-#screen-4 .scroll-down {
-  color: rgba(0, 0, 0, 0.3);
-}
-.scroll-down:active {
-  animation-play-state: paused;
-  opacity: 0.6;
-}
-@keyframes bounce-arrow {
-  0%, 100% { transform: translateX(-50%) translateY(0);   }
-  50%       { transform: translateX(-50%) translateY(9px); }
+  margin-top: 400px;
 }
 
 /* ── Slide-up animation (generic) ─────────────────── */
@@ -352,7 +296,6 @@ body {
   padding: 24px;
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  /* hidden by default via opacity/visibility (allows close animation) */
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -364,11 +307,9 @@ body {
   pointer-events: auto;
 }
 
-/* Box open animation */
 .modal.is-open .modal-box {
   animation: box-in 0.25s ease forwards;
 }
-/* Box close animation */
 .modal.is-closing .modal-box {
   animation: box-out 0.22s ease forwards;
 }
@@ -395,7 +336,6 @@ body {
   position: relative;
 }
 
-/* ✕ close button */
 .modal-x {
   position: absolute;
   top: 12px;
