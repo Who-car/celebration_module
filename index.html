@@ -1,137 +1,125 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>23 Февраля | Special Operation</title>
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <!-- Для iOS: разрешаем autoplay -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-    <!-- Отключаем экономию данных которая блокирует видео -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Happy Birthday Корина! 🎉</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- 1. КОНТЕЙНЕР ЛОАДЕРА -->
-    <div id="terminal-loader">
-        <div class="terminal-content">
-            <div class="terminal-text"></div>
-            <span class="cursor">_</span>
-        </div>
+  <!-- ─── LOADING SCREEN ─────────────────────────────────── -->
+  <div id="loading-screen">
+    <img src="assets/maxwell-cat.gif" alt="Загрузка...">
+    <p id="loading-text">Думаю....Подождите....</p>
+  </div>
+
+  <!-- ─── SCREEN 1: INTRO VIDEO ─────────────────────────── -->
+  <section class="screen" id="screen-1">
+    <video id="intro-video" muted playsinline>
+      <source src="assets/0317%20(1)(2).mp4" type="video/mp4">
+    </video>
+
+    <!-- replay overlay (shown after video ends) -->
+    <div id="replay-overlay">
+      <button id="replay-btn" aria-label="Посмотреть еще раз">↺</button>
     </div>
 
-    <!-- 2. КАПЧА В СТИЛЕ GOOGLE (скрыта по умолчанию) -->
-    <div id="captcha-overlay" class="hidden">
-        <div class="captcha-modal">
-            <div class="captcha-header">
-                <span class="captcha-logo">reCAPTCHA</span>
-                <button class="captcha-close" onclick="closeCaptcha()">✕</button>
-            </div>
-            <div class="captcha-body">
-                <div class="captcha-instruction">Выберите все фрагменты в правильном порядке</div>
-                
-                <!-- Пазл -->
-                <div id="puzzle-grid"></div>
-                
-                <!-- Видео (скрыто до решения пазла) -->
-                <div id="captcha-video-container" class="hidden">
-                    <div id="video-overlay" class="video-overlay">
-                        <div class="video-start-prompt">
-                            <div class="play-icon">▶</div>
-                            <p>Нажмите для воспроизведения</p>
-                        </div>
-                    </div>
-                    <video id="captcha-video" playsinline webkit-playsinline muted>
-                        <source src="assets/captcha.mp4" type="video/mp4">
-                        Ваш браузер не поддерживает видео
-                    </video>
-                </div>
-                
-                <!-- Успех (скрыто до конца видео) -->
-                <div id="captcha-success" class="hidden">
-                    <div class="success-checkmark">
-                        <svg viewBox="0 0 52 52" class="checkmark">
-                            <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
-                            <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-                        </svg>
-                    </div>
-                    <p>Подтверждено</p>
-                </div>
-            </div>
-            <div class="captcha-footer">
-                <div class="captcha-branding">
-                    <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA">
-                    <span>Privacy - Terms</span>
-                </div>
-            </div>
-        </div>
+    <!-- sound toggle -->
+    <button class="sound-toggle" id="sound1" aria-label="Звук">🔇</button>
+
+    <button class="scroll-down dark" data-target="screen-2" aria-label="Следующий экран">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+  </section>
+
+  <!-- ─── SCREEN 2: BIRTHDAY + CAT ──────────────────────── -->
+  <section class="screen" id="screen-2">
+    <div class="screen-top">
+      <h1 class="bday-title">Happy Birthday<br>to Корино</h1>
+      <p class="bday-sub">Поздравляем с днем рождения самого крутого гэнгста на районе. Желаю тебе ЛЮБВИ, ЗДОРОВЬЯ, и конечно же A LOT OF MONEY</p>
+    </div>
+    <div class="screen-bottom">
+      <video id="cat-video" muted playsinline loop>
+        <source src="assets/OIIAOIIA%20CAT%20Happy%20Birthday%20to%20You%20_%20Spinning%20Cat%20Uia%20Meme.mp4" type="video/mp4">
+      </video>
     </div>
 
-    <!-- 3. КОНТЕЙНЕР ИГРЫ (скрыт по умолчанию) -->
-    <div id="game-container" class="hidden">
-        <canvas id="game-canvas"></canvas>
-        
-        <!-- Мобильное управление -->
-        <div class="mobile-controls" id="mobile-controls">
-            <div class="dpad">
-                <button class="dpad-btn up" data-key="ArrowUp">▲</button>
-                <button class="dpad-btn left" data-key="ArrowLeft">◀</button>
-                <button class="dpad-btn right" data-key="ArrowRight">▶</button>
-                <button class="dpad-btn down" data-key="ArrowDown">▼</button>
-            </div>
-            <button class="fire-btn" data-key=" ">●</button>
+    <button class="scroll-down" data-target="screen-3" aria-label="Следующий экран">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+  </section>
+
+  <!-- ─── SCREEN 3: PHOTO + ACROSTIC ────────────────────── -->
+  <section class="screen" id="screen-3">
+    <div class="s3-row">
+      <div class="s3-left">
+        <img
+          src="assets/%D0%BA%D0%BE%D1%80%D0%B8%D0%BD%D0%BE-Photoroom.png"
+          id="karina-photo"
+          alt="Корина"
+        >
+      </div>
+      <div class="s3-right">
+        <div class="acrostic">
+          <p class="a-line slide-up"><span class="a-letter">К</span> - лучшая</p>
+          <p class="a-line slide-up"><span class="a-letter">А</span> - девочка</p>
+          <p class="a-line slide-up"><span class="a-letter">Р</span> - на</p>
+          <p class="a-line slide-up"><span class="a-letter">И</span> - всей</p>
+          <p class="a-line slide-up"><span class="a-letter">Н</span> - планете</p>
+          <p class="a-line slide-up"><span class="a-letter">А</span> - Земля!!</p>
         </div>
+      </div>
     </div>
 
-    <!-- 4. МОДАЛКА ПОЗДРАВЛЕНИЯ (скрыта) -->
-    <div id="congrats-modal" class="modal hidden">
-        <div class="modal-content">
-            <img id="congrats-img" src="" alt="Congrats">
-            <h2 id="congrats-text"></h2>
-            <button onclick="openLootboxScene()">Получить подарок</button>
-        </div>
-    </div>
+    <button class="scroll-down" data-target="screen-4" aria-label="Следующий экран">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+  </section>
 
-    <!-- 5. СЦЕНА ЛУТБОКСА (скрыта) -->
-    <div id="lootbox-scene" class="hidden">
-        <h2>REWARD PROTOCOL ACTIVE</h2>
-        <div class="lootbox-wrapper">
-            <div class="lootbox">
-                <div class="selector"></div>
-                <div class="lootbox-items" id="lootbox-items"></div>
-            </div>
-        </div>
-        <button id="spin-btn" onclick="spinLootbox()">ОТКРЫТЬ</button>
+  <!-- ─── SCREEN 4: FULL-WIDTH VIDEO ────────────────────── -->
+  <section class="screen" id="screen-4">
+    <div class="vid4-wrap slide-up">
+      <video id="main-video" muted playsinline>
+        <source src="assets/0317.mp4" type="video/mp4">
+      </video>
     </div>
+    <!-- sound toggle -->
+    <button class="sound-toggle" id="sound4" aria-label="Звук">🔇</button>
 
-    <!-- 6. ФИНАЛЬНЫЙ ЭКРАН (скрыт) -->
-    <div id="final-prize" class="modal hidden">
-        <div class="modal-content">
-            <div class="copy-toast">Скопировано в буфер обмена</div>
-            <button class="final-close" onclick="closeFinalPrize()">✕</button>
-            <h2>ПОЗДРАВЛЯЕМ!</h2>
-            <img src="assets/certificate.jpg" alt="Certificate" class="certificate-img">
-            <p id="final-prize-text">Твой подарок на 23 февраля!</p>
-            <p>Активируйте через 'Игры' → 'Активировать в Steam'. Активируйте код до 18 февраля 2027</p>
-            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1" target="_blank" class="get-prize-btn">
-                ПОЛУЧИТЬ СЕРТИФИКАТ
-            </a>
-        </div>
+    <button class="scroll-down" data-target="screen-5" aria-label="Следующий экран">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+  </section>
+
+  <!-- ─── SCREEN 5: GIFT ────────────────────────────────── -->
+  <section class="screen" id="screen-5">
+    <p class="gift-hint">Сделай хлопок и нажми на подарок</p>
+    <img src="assets/free-png.ru-291.png" id="gift-img" alt="Подарок">
+
+    <button class="scroll-down" data-target="screen-6" aria-label="Следующий экран">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+  </section>
+
+  <!-- ─── SCREEN 6: EASTER EGG ──────────────────────────── -->
+  <section class="screen" id="screen-6">
+    <p class="last-msg">Что ты еще ищешь?<br>Ты уже получила подарок</p>
+  </section>
+
+  <!-- ─── MODAL ─────────────────────────────────────────── -->
+  <div id="modal" class="modal">
+    <div class="modal-box">
+      <button id="modal-x" class="modal-x" aria-label="Закрыть">✕</button>
+      <img id="modal-img" src="assets/images.jpeg" class="hidden" alt="">
+      <div id="modal-text"></div>
     </div>
+  </div>
 
-    <!-- Подключаем скрипты (порядок важен!) -->
-    <script src="js/loader.js"></script>
-    <script src="js/captcha.js"></script>
-    <script src="js/game.js"></script>
-    <script src="js/lootbox.js"></script>
-    <script src="js/main.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

@@ -1,153 +1,227 @@
-const congratulationsMap = {
-    default: { 
-        subtext: "ЗАЩИТНИК КОДА И ПОВЕЛИТЕЛЬ БАГОВ",
-        img: 'assets/card_1.gif'
-    },
-    "1": {
-        subtext: "Кирилл, с 23 февраля! Желаем тебе крепкого здоровья, уверенности в своих силах и неиссякаемой энергии для всех твоих планов. Пусть любые испытания превращаются в интересные квесты, которые ты проходишь с лёгкостью и юмором. Оставайся таким же надёжным, позитивным и целеустремлённым человеком, с которым всегда приятно общаться. Пусть в жизни будет больше побед, ярких моментов и поводов для гордости!",
-        img: 'assets/card_2.webp'
-    },
-    "2": {
-        subtext: "Дмитрий, поздравляем тебя с 23 февраля! Желаем стойкости, уверенности и успехов во всех начинаниях. Пусть каждый день приносит новые достижения, интересные идеи и отличные результаты. Оставайся таким же спокойным, рассудительным и сильным духом человеком. Пусть удача сопровождает тебя в учёбе, жизни и всех важных делах, а настроение всегда будет на высоте!",
-        img: 'assets/card_3.webp'
-    },
-    "3": {
-        subtext: "Максим, с праздником! Желаем тебе мощной мотивации, крепких нервов и огромного запаса энергии на все задачи и цели. Пусть любые трудности решаются быстро и без лишнего стресса, а успех становится твоим постоянным спутником. Оставайся таким же дружелюбным, весёлым и уверенным в себе человеком, который умеет идти вперёд несмотря ни на что!",
-        img: 'assets/card_4.webp'
-    },
-    "4": { 
-        subtext: "Андрей, с 23 февраля! Твои годы в айкидо - это уже показатель силы, дисциплины и настоящего характера. Желаем тебе ещё больше побед, как в спорте, так и в жизни. Пусть твоя целеустремлённость помогает достигать любых высот, а сила духа никогда не подводит. Оставайся таким же собранным, выносливым и крутым — настоящим бойцом не только на татами, но и в повседневной жизни!",
-        img: 'assets/card_1.gif'
-    },
-    "5": {
-        subtext: "Максим, с 23 февраля! Ты человек с особым взглядом на мир и своей уникальной атмосферой, которая делает тебя по-настоящему запоминающимся. А твой заразительный смех - это вообще отдельный бонус, который способен неожиданно разрядить любую обстановку. Желаем тебе внутреннего спокойствия, уверенности в себе, больше поводов для искреннего хорошего настроения и чтобы в жизни было как можно больше приятных сюрпризов!",
-        img: 'assets/card_2.webp'
-    },
-    "6": {
-        subtext: "Антон, с праздником! Наш главный математический стратег, желаем тебе, чтобы все жизненные задачи имели красивые решения, а сложные ситуации раскладывались по формуле успеха. Пусть логика, ум и сообразительность всегда приводят тебя к победам. Оставайся таким же умным, целеустремлённым и уверенным в себе — человеком, который способен найти решение даже там, где другие уже сдались!",
-        img: 'assets/card_3.webp'
-    },
-    "8": {
-        subtext: "Рузан, с 23 февраля! Желаем тебе уверенности, стойкости и больших достижений во всех сферах жизни. Пусть каждый день приносит новые возможности, интересные события и хорошие результаты. Оставайся таким же спокойным, надёжным и сильным человеком, который уверенно идёт к своим целям!",
-        img: 'assets/card_4.webp'
-    },
-    "9": {
-        subtext: "Ильнар, с 23 февраля! Наш главный олимпиадник и настоящий гений в компьютерных технологиях, ты - человек, который способен разобраться даже в самых сложных задачах быстрее, чем у других успеет загрузиться условие. Желаем тебе неиссякаемого запаса идей, новых интеллектуальных побед и больших достижений в IT и не только. Пусть твой ум, логика и упорство всегда приводят к успеху, а любые задачи становятся для тебя просто интересным челленджем.",
-        img: 'assets/card_1.gif'
-    },
-    "10": {
-        subtext: "Амир, с 23 февраля! Желаем тебе силы, терпения и уверенности в каждом шаге. Пусть все цели достигаются, планы реализуются, а жизнь радует приятными событиями и новыми возможностями. Оставайся таким же активным, позитивным и надёжным товарищем!",
-        img: 'assets/card_2.webp'
-    },
-    "12": {
-        subtext: "Егор, с праздником! Пусть ты появляешься на парах редко, но зато метко и запоминающеся! Желаем тебе лёгкой учёбы, успешных сдач и чтобы удача всегда помогала даже в самых неожиданных ситуациях. Пусть времени хватает на всё важное, а жизнь радует комфортом, успехами и хорошим настроением!",
-        img: 'assets/card_3.webp'
-    },
-    "13": { 
-        subtext: "Азат, с 23 февраля! Желаем тебе уверенно двигаться вперёд к своим целям, сохранять спокойствие в любых ситуациях и всегда находить правильные решения. Пусть у тебя будет достаточно сил и мотивации для всех планов, а успех становится закономерным результатом твоего труда. Пусть каждый новый день приносит полезный опыт, хорошие возможности и заслуженные достижения!",
-        img: 'assets/card_4.webp'
-    },
-    "14": {
-        subtext: "Нияз, с праздником! Работотехника - это уже уровень будущего, и мы желаем тебе ещё больше крутых проектов, гениальных идей и технических побед. Пусть все твои разработки работают идеально, а в жизни всё складывается чётко, как хорошо написанный код. Оставайся таким же умным, перспективным и увлечённым своим делом человеком!",
-        img: 'assets/card_1.gif'
-    },
-    "15": {
-        subtext: "Никита, с 23 февраля! Желаем тебе уверенности в себе, стабильности и больших успехов в работе и жизни. Пусть каждый день приносит новые достижения, приятные события и хорошие эмоции. Оставайся таким же спокойным, дружелюбным и надёжным человеком!",
-        img: 'assets/card_2.webp'
-    },
-    "16": {
-        subtext: "Максим, поздравляем с праздником! Желаем тебе сил, энергии и уверенности в каждом дне. Пусть все цели достигаются, планы выполняются, а жизнь радует интересными возможностями. Оставайся таким же позитивным, отзывчивым и классным человеком!",
-        img: 'assets/card_3.webp'
-    },
-    "17": {
-        subtext: "Айдар, с 23 февраля! Желаем тебе уверенности в себе, стабильности и больших успехов в работе и жизни. Пусть каждый день приносит новые достижения, приятные события и хорошие эмоции. Оставайся таким же спокойным, дружелюбным и надёжным человеком!",
-        img: 'assets/card_4.webp'
-    },
-    "19": {
-        subtext: "Ахмед, с 23 февраля! Желаем тебе крепкого характера, уверенности и больших жизненных побед. Пусть все задачи решаются успешно, а любые трудности только делают тебя сильнее. Оставайся таким же достойным, целеустремлённым и надёжным человеком!",
-        img: 'assets/card_1.gif'
-    },
-    "20": { 
-        subtext: "Матвей, с праздником! Самый добрый, чуткий и душевный человек - желаем тебе тепла, стабильности, крепкого здоровья и верных друзей рядом. Пусть в жизни будет больше искренности, уюта и спокойствия, а всё хорошее возвращается к тебе вдвойне. Оставайся таким же светлым и отзывчивым человеком!",
-        img: 'assets/card_2.webp'
-    },
-    "21": {
-        subtext: "Тимур, с 23 февраля! Твой стиль - это уже фирменная харизма и индивидуальность. Желаем тебе всегда оставаться уникальным, уверенным в себе и идти своим путём, не теряя креативности и внутренней силы. Пусть жизнь будет яркой, насыщенной и полной крутых событий!",
-        img: 'assets/card_3.webp'
-    },
-    "24": {
-        subtext: "Камил, с праздником! Твоя любовь к спорту и силе - это уважение и дисциплина. Желаем тебе ещё больше энергии, мощных тренировок, отличных результатов и позитивных дней. Пусть сила, выносливость и характер помогают тебе достигать любых высот!",
-        img: 'assets/card_4.webp'
-    },
-    "25": {
-        subtext: "Алмаз, с 23 февраля! Пусть твоя жизнь будет такой же яркой, захватывающей и вдохновляющей, как лучшие аниме-сюжеты. Желаем тебе эпичных достижений, прокачки навыков, верных друзей и только позитивных поворотов в сюжете твоей жизни. Пусть каждый новый день будет как новая крутая серия с хорошим финалом!",
-        img: 'assets/card_1.gif'
-    },
-};
+/* ══════════════════════════════════════════════════════
+   Happy Birthday Корина — main.js
+   ══════════════════════════════════════════════════════ */
 
-// 🔧 ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ: получение query-параметров
-function getUrlParameter(name) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
+// ── Loading Screen ──────────────────────────────────────
+const loadingScreen = document.getElementById('loading-screen');
+let loadingDone = false;
+
+function hideLoading() {
+  if (loadingDone) return;
+  loadingDone = true;
+  loadingScreen.classList.add('fade-out');
+  setTimeout(() => loadingScreen.remove(), 900);
+  // Start + unmute intro video only after loader disappears
+  setTimeout(() => {
+    introVideo.play().catch(() => {});
+    setMuted(introVideo, 'sound1', false);
+  }, 950);
 }
 
-// 🔧 ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ: получение поздравления по ID
-function getCongratulationsById(id) {
-    // Если ID есть в словаре — возвращаем его, иначе — дефолтное
-    return congratulationsMap[id] || congratulationsMap.default;
+const imgPromises = [];
+document.querySelectorAll('img:not(#loading-screen img)').forEach(img => {
+  imgPromises.push(new Promise(resolve => {
+    if (img.complete && img.naturalWidth > 0) { resolve(); return; }
+    img.addEventListener('load',  resolve, { once: true });
+    img.addEventListener('error', resolve, { once: true });
+  }));
+});
+
+const vidPromises = [];
+document.querySelectorAll('video').forEach(video => {
+  vidPromises.push(new Promise(resolve => {
+    if (video.readyState >= 2) { resolve(); return; }
+    video.addEventListener('loadeddata', resolve, { once: true });
+    video.addEventListener('error',      resolve, { once: true });
+    setTimeout(resolve, 10000);
+  }));
+});
+
+const MIN_LOADING_MS = 5000;
+const loadingStart = Date.now();
+
+Promise.all([...imgPromises, ...vidPromises]).then(() => {
+  const elapsed = Date.now() - loadingStart;
+  const remaining = Math.max(0, MIN_LOADING_MS - elapsed);
+  setTimeout(hideLoading, remaining + 250);
+});
+
+setTimeout(hideLoading, 18000);
+
+
+// ── Screen 1: replay overlay + sound toggle ─────────────
+const introVideo     = document.getElementById('intro-video');
+const replayOverlay  = document.getElementById('replay-overlay');
+const replayBtn      = document.getElementById('replay-btn');
+
+let autoScrollDone = false;
+
+introVideo.addEventListener('ended', () => {
+  replayOverlay.classList.add('show');
+  if (!autoScrollDone) {
+    autoScrollDone = true;
+    setTimeout(() => {
+      document.getElementById('screen-2').scrollIntoView({ behavior: 'smooth' });
+    }, 800);
+  }
+});
+
+replayBtn.addEventListener('click', () => {
+  replayOverlay.classList.remove('show');
+  document.getElementById('screen-1').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => {
+    introVideo.currentTime = 0;
+    introVideo.play().catch(() => {});
+  }, 600);
+});
+
+
+// ── Sound toggles (screens 1 & 4) ──────────────────────
+const mainVideo = document.getElementById('main-video');
+
+function setMuted(video, btnId, muted) {
+  const btn = document.getElementById(btnId);
+  video.muted = muted;
+  btn.textContent = muted ? '🔇' : '🔊';
 }
 
-const confettiInterval = null; // Инициализация (будет перезаписана)
-
-function showCongratulations() {
-    // 1️⃣ Достаём id из query-параметров
-    const congratsId = getUrlParameter('id');
-    
-    // 2️⃣ Получаем данные поздравления по ID (или дефолтные)
-    const congratsData = getCongratulationsById(congratsId);
-    
-    // 3️⃣ Устанавливаем контент
-    document.getElementById('congrats-img').src = congratsData.img;
-    document.getElementById('congrats-text').innerHTML = `
-        <h1 class="retro-title">С 23 ФЕВРАЛЯ!</h1>
-        <p class="retro-subtitle">${congratsData.subtext}</p>
-    `;
-    
-    document.getElementById('game-container').classList.add('hidden');
-    document.getElementById('congrats-modal').classList.remove('hidden');
-    
-    // 🔥 ЗАПУСКАЕМ ПОСТОЯННОЕ КОНФЕТТИ
-    startContinuousConfetti();
+function makeSoundToggle(btnId, video) {
+  const btn = document.getElementById(btnId);
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    setMuted(video, btnId, !video.muted);
+  });
 }
 
-function startContinuousConfetti() {
-    // Очищаем предыдущий интервал если есть
-    if (window.confettiInterval) {
-        clearInterval(window.confettiInterval);
+makeSoundToggle('sound1', introVideo);
+makeSoundToggle('sound4', mainVideo);
+
+
+// ── Screen 2: play cat video + confetti on enter ────────
+const catVideo    = document.getElementById('cat-video');
+let confettiFired = false;
+
+const obs2 = new IntersectionObserver(entries => {
+  if (!entries[0].isIntersecting) return;
+
+  catVideo.play().catch(() => {});
+
+  if (!confettiFired) {
+    confettiFired = true;
+    setTimeout(() => {
+      confetti({ particleCount: 90, angle: 60,  spread: 55, origin: { x: 0, y: 0.55 } });
+      confetti({ particleCount: 90, angle: 120, spread: 55, origin: { x: 1, y: 0.55 } });
+    }, 400);
+  }
+}, { threshold: 0.45 });
+obs2.observe(document.getElementById('screen-2'));
+
+
+// ── Screen 3: slide-up photo + acrostic ────────────────
+// Photo has its own CSS classes (not using .slide-up)
+const karinaPhoto = document.getElementById('karina-photo');
+const obsPhoto = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    karinaPhoto.classList.add('visible');
+    obsPhoto.disconnect();
+  }
+}, { threshold: 0.15 });
+obsPhoto.observe(karinaPhoto);
+
+// Each acrostic line individually
+document.querySelectorAll('#screen-3 .slide-up').forEach(el => {
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      el.classList.add('visible');
+      obs.disconnect();
     }
-    
-    // Запускаем конфетти каждые 300мс
-    window.confettiInterval = setInterval(() => {
-        confetti({
-            particleCount: 5,
-            angle: 60,
-            spread: 55,
-            origin: { x: 0 },
-            colors: ['#ff6b6b', '#4ecdc4', '#ffe66d', '#ff6b9d', '#c44569']
-        });
-        confetti({
-            particleCount: 5,
-            angle: 120,
-            spread: 55,
-            origin: { x: 1 },
-            colors: ['#ff6b6b', '#4ecdc4', '#ffe66d', '#ff6b9d', '#c44569']
-        });
-    }, 300);
+  }, { threshold: 0.1 });
+  obs.observe(el);
+});
+
+
+// ── Screen 4: slide-up video + play + auto-scroll ───────
+const vid4Wrap        = document.querySelector('.vid4-wrap');
+let screen4Triggered  = false;
+
+const obs4 = new IntersectionObserver(entries => {
+  if (!entries[0].isIntersecting || screen4Triggered) return;
+  screen4Triggered = true;
+
+  vid4Wrap.classList.add('visible');
+
+  mainVideo.play().catch(() => {});
+  setMuted(mainVideo, 'sound4', false);
+
+  obs4.disconnect();
+}, { threshold: 0.35 });
+obs4.observe(document.getElementById('screen-4'));
+
+mainVideo.addEventListener('ended', () => {
+  document.getElementById('screen-5').scrollIntoView({ behavior: 'smooth' });
+});
+
+
+// ── Modal helpers ───────────────────────────────────────
+const modal     = document.getElementById('modal');
+const modalText = document.getElementById('modal-text');
+const modalImg  = document.getElementById('modal-img');
+const modalX    = document.getElementById('modal-x');
+
+function openModal() {
+  modal.classList.remove('is-closing');
+  modal.classList.add('is-open');
 }
 
-function stopConfetti() {
-    if (window.confettiInterval) {
-        clearInterval(window.confettiInterval);
-        window.confettiInterval = null;
-    }
+function closeModal() {
+  modal.classList.add('is-closing');
+  modal.classList.remove('is-open');
+  setTimeout(() => modal.classList.remove('is-closing'), 260);
 }
+
+modalX.addEventListener('click', closeModal);
+modal.addEventListener('click', e => {
+  if (e.target === modal) closeModal();
+});
+
+
+// ── Scroll-down arrows ──────────────────────────────────
+document.querySelectorAll('.scroll-down').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = document.getElementById(btn.dataset.target);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+
+// ── Screen 5: gift modal ────────────────────────────────
+const giftImg = document.getElementById('gift-img');
+
+const MESSAGES = [
+  'Я же сказала сделать хлопок',
+  'Повтори.',
+  'Ладно',
+  'Ты че реально думаешь получишь подарок без хлопка? Давай хлопай',
+  'Ну ладно прощаю, открывай',
+  null, // 6th — image + promo text
+];
+
+let giftClicks = 0;
+
+giftImg.addEventListener('click', () => {
+  giftClicks = Math.min(giftClicks + 1, 6);
+
+  if (giftClicks < 6) {
+    modalImg.classList.add('hidden');
+    modalText.innerHTML = MESSAGES[giftClicks - 1];
+  } else {
+    modalImg.classList.remove('hidden');
+    modalText.innerHTML =
+      'ДЕНЬГИ — лучший подарок.' +
+      '<br><br>' +
+      'Чтобы получить подарок пиши в нашем чате промокод<br>' +
+      '<span class="promo">АЙСЫЛУ ЭТО ОЧЕНЬ КРУТОЙ ПОДАРОК</span>';
+  }
+
+  openModal();
+});
