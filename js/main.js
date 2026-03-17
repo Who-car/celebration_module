@@ -11,10 +11,6 @@ function hideLoading() {
   loadingDone = true;
   loadingScreen.classList.add('fade-out');
   setTimeout(() => loadingScreen.remove(), 900);
-  // Start intro video (already muted via HTML attr) after loader fade
-  setTimeout(() => {
-    introVideo.play().catch((e) => { console.log(e); });
-  }, 950);
 }
 
 const imgPromises = [];
@@ -48,10 +44,25 @@ Promise.all([...imgPromises, ...vidPromises]).then(() => {
 setTimeout(hideLoading, 18000);
 
 
-// ── Section 1: replay overlay + sound toggle ─────────────
-const introVideo     = document.getElementById('intro-video');
-const replayOverlay  = document.getElementById('replay-overlay');
-const replayBtn      = document.getElementById('replay-btn');
+// ── Section 1: tap-to-play + replay overlay + sound toggle ──
+const introVideo    = document.getElementById('intro-video');
+const replayOverlay = document.getElementById('replay-overlay');
+const replayBtn     = document.getElementById('replay-btn');
+const tap1          = document.getElementById('tap1');
+
+function startIntroVideo() {
+  tap1.classList.add('hidden');
+  introVideo.muted = false;
+  introVideo.play().catch(() => {
+    // fallback: play muted if sound blocked
+    introVideo.muted = true;
+    document.getElementById('sound1').textContent = '🔇';
+    introVideo.play().catch(() => {});
+  });
+  document.getElementById('sound1').textContent = '🔊';
+}
+
+tap1.addEventListener('click', startIntroVideo);
 
 introVideo.addEventListener('ended', () => {
   replayOverlay.classList.add('show');
@@ -59,10 +70,9 @@ introVideo.addEventListener('ended', () => {
 
 replayBtn.addEventListener('click', () => {
   replayOverlay.classList.remove('show');
-  setTimeout(() => {
-    introVideo.currentTime = 0;
-    introVideo.play().catch(() => {});
-  }, 600);
+  tap1.classList.remove('hidden');
+  introVideo.pause();
+  introVideo.currentTime = 0;
 });
 
 
@@ -72,11 +82,12 @@ const mainVideo = document.getElementById('main-video');
 function setMuted(video, btnId, muted) {
   const btn = document.getElementById(btnId);
   video.muted = muted;
-  btn.textContent = muted ? '🔇' : '🔊';
+  if (btn) btn.textContent = muted ? '🔇' : '🔊';
 }
 
 function makeSoundToggle(btnId, video) {
   const btn = document.getElementById(btnId);
+  if (!btn) return;
   btn.addEventListener('click', e => {
     e.stopPropagation();
     setMuted(video, btnId, !video.muted);
@@ -86,21 +97,6 @@ function makeSoundToggle(btnId, video) {
 makeSoundToggle('sound1', introVideo);
 makeSoundToggle('sound4', mainVideo);
 
-// Unmute intro video on first user gesture (tap/click anywhere)
-function unmuteOnFirstGesture() {
-  if (!introVideo.muted) return;
-  if (!introVideo.ended) {
-    setMuted(introVideo, 'sound1', false);
-  }
-  var loadingText = document.querySelector("#loading-text");
-  if (loadingText) {
-    loadingText.textContent = "Подождите...";
-  }
-  document.removeEventListener('touchstart', unmuteOnFirstGesture);
-  document.removeEventListener('click', unmuteOnFirstGesture);
-}
-document.addEventListener('touchstart', unmuteOnFirstGesture, { once: true });
-document.addEventListener('click', unmuteOnFirstGesture, { once: true });
 
 
 // ── Section 2: play cat video + confetti on enter ────────
@@ -144,23 +140,31 @@ document.querySelectorAll('#screen-3 .slide-up').forEach(el => {
 });
 
 
-// ── Section 4: slide-up video + play ────────────────────
+// ── Section 4: slide-up video + tap-to-play ─────────────
 const vid4Wrap        = document.querySelector('.vid4-wrap');
+const tap4            = document.getElementById('tap4');
 let screen4Triggered  = false;
 
 const obs4 = new IntersectionObserver(entries => {
   if (!entries[0].isIntersecting || screen4Triggered) return;
   screen4Triggered = true;
-
   vid4Wrap.classList.add('visible');
-
-  mainVideo.play()
-    .then(() => { setMuted(mainVideo, 'sound4', false); })
-    .catch(() => {});
-
   obs4.disconnect();
 }, { threshold: 0.15 });
 obs4.observe(document.getElementById('screen-4'));
+
+tap4.addEventListener('click', () => {
+  tap4.classList.add('hidden');
+  mainVideo.muted = false;
+  mainVideo.play().catch(() => {
+    mainVideo.muted = true;
+    const s4 = document.getElementById('sound4');
+    if (s4) s4.textContent = '🔇';
+    mainVideo.play().catch(() => {});
+  });
+  const s4 = document.getElementById('sound4');
+  if (s4) s4.textContent = '🔊';
+});
 
 
 // ── Modal helpers ───────────────────────────────────────

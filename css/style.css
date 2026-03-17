@@ -52,6 +52,51 @@ body {
   overflow: hidden;
 }
 
+/* ── Tap-to-play overlay ──────────────────────────── */
+.vid-tap-wrap {
+  position: relative;
+  width: 100%;
+}
+.tap-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.38);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: opacity 0.35s ease;
+  z-index: 5;
+}
+.tap-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.tap-play-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2.5px solid rgba(255, 255, 255, 0.85);
+  color: #fff;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 4px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.tap-label {
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
 /* ── Section 1 ────────────────────────────────────── */
 #intro-video {
   width: 100%;
