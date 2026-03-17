@@ -122,7 +122,7 @@ let confettiFired = false;
 const obs2 = new IntersectionObserver(entries => {
   if (!entries[0].isIntersecting) return;
 
-  catVideo.play().catch(() => {});
+  catVideo.play().catch((e) => {console.log(e)});
 
   if (!confettiFired) {
     confettiFired = true;
